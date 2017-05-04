@@ -1,18 +1,30 @@
 import React from 'react';
 import Controls from './Controls';
-import { Card } from 'semantic-ui-react';
+import { Card, Grid, Image } from 'semantic-ui-react';
+
+import coverImg from '../img/test.jpg';
+
+import '../style/AudioPlayer.css';
+
+const mixArtist = "DJ Advance";
+const mixTitle = "Example mix May 2017";
 
 function AudioPlayer() {
   return (
-    <Card>
-      <Card.Content>
-        <audio controls="controls"
-          src="https://d778008a60e856cc9716-de7a668058c1db97713a59708a969f8c.ssl.cf3.rackcdn.com/pm026a.mp3?mc_cid=97526204b9&amp;mc_eid=4fa2fa5d03"
-          type="audio/mpeg">
-        </audio>
-        <Controls />
-      </Card.Content>
-    </Card>
+    <Grid centered columns={2} padded='vertically'>
+      <Grid.Column>
+        <Card raised fluid color='blue' className="b-audio-player">
+          <Card.Content>
+            <Image src={coverImg} className="b-audio-player--cover-img" />
+            <Card.Header content={mixArtist} />
+            <Card.Content description={mixTitle} />
+          </Card.Content>
+          <Card.Content extra>
+            <Controls />
+          </Card.Content>
+        </Card>
+      </Grid.Column>
+    </Grid>
   );
 }
 
