@@ -1,28 +1,40 @@
 import React, { Component } from 'react';
-import { Button, Icon, Table } from 'semantic-ui-react';
+import { Button, Icon, Table, Dimmer } from 'semantic-ui-react';
 
 class TracklistTable extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      tableRows: [
+      tracks: [
         {
           trackTime: '0.00',
           trackTitle: 'Caroline K - Tracking With Close Ups',
           trackUrl: 'Caroline-K-Now-Wait-For-Last-Year/release/10182988',
-          releaseId: '10182988'
+          releaseId: '10182988',
+          label: 'Blackest Ever Black'
+        },
+        {
+          trackTime: '1.00',
+          trackTitle: 'Foul Play - Being With You (Foul Play remix)',
+          trackUrl: 'Foul-Play-Vol-4-Remixes-Part-I/release/125038',
+          releaseId: '125038',
+          label: 'Moving Shadow'
         }
-      ]
+      ],
+      showDimmer: false
     };
 
-    this.addTableRow = this.addTableRow.bind(this);
+    this.addTabletrack = this.addTabletrack.bind(this);
+    this.editTrack = this.editTrack.bind(this);
+    this.deleteTrack = this.deleteTrack.bind(this);
+    this.closeDimmer = this.closeDimmer.bind(this);
   }
 
-  addTableRow(e) {
+  addTabletrack(e) {
     e.preventDefault();
     this.setState((prevState) => ({
-      tableRows: prevState.tableRows.concat({
+      tracks: prevState.tracks.concat({
         trackTime: '',
         trackTitle: '',
         trackUrl: '',
@@ -31,41 +43,77 @@ class TracklistTable extends Component {
     }));
   }
 
+  editTrack() {
+    this.setState({ showDimmer: true });
+    console.log(this.props.children);
+  }
+
+  deleteTrack(id) {
+    console.log(id);
+    this.setState({
+      tracks: this.state.tracks.filter(tracks => tracks.releaseId !== id)
+    });
+  }
+
+  closeDimmer() {
+    this.setState({ showDimmer: false });
+  }
+
   render() {
-    const tableRows = this.state.tableRows.map(row => {
+    const tableRows = this.state.tracks.map(track => {
       return (
-        <Table.Row key={row.releaseId}>
-          <Table.Cell>{row.trackTime}</Table.Cell>
+        <Table.Row key={track.releaseId}>
           <Table.Cell>
-            <a href={`'https://www.discogs.com/${row.trackUrl}'`}>{row.trackTitle}</a>
+            {track.trackTime}
+          </Table.Cell>
+          <Table.Cell>
+            <a href={`'https://www.discogs.com/${track.trackUrl}'`}>{track.trackTitle}</a>
+          </Table.Cell>
+          <Table.Cell>
+            {track.label}
           </Table.Cell>
           <Table.Cell collapsing textAlign='center'>
-            <Icon name='edit' />
+            <Icon name='edit' link onClick={this.editTrack} />
           </Table.Cell>
           <Table.Cell collapsing textAlign='center'>
-            <Icon name='delete' color='red' />
+            <Icon name='delete' link color='red' onClick={() => this.deleteTrack(track.releaseId)} />
           </Table.Cell>
         </Table.Row>
       );
-    })
+    });
+
+    const { showDimmer } = this.state;
+    const content = (
+      <div>
+        <h2>Edit Track</h2>
+      </div>
+    );
 
     return (
-      <Table celled>
+      <Dimmer.Dimmable 
+        dimmed={showDimmer}>
+        <Dimmer active={showDimmer} onClickOutside={this.closeDimmer} page >
+          {content}
+        </Dimmer>
+        <Table celled>
           <Table.Header>
-              <Table.Row>
-                  <Table.HeaderCell>
-                      Time
-                  </Table.HeaderCell>
-                  <Table.HeaderCell>
-                      Track Name
-                  </Table.HeaderCell>
-                  <Table.HeaderCell>
-                      Edit
-                  </Table.HeaderCell>
-                  <Table.HeaderCell>
-                      Delete
-                  </Table.HeaderCell>
-              </Table.Row>
+            <Table.Row>
+              <Table.HeaderCell>
+                Time
+                    </Table.HeaderCell>
+              <Table.HeaderCell>
+                Track Name
+                    </Table.HeaderCell>
+              <Table.HeaderCell>
+                Label
+                    </Table.HeaderCell>
+              <Table.HeaderCell>
+                Edit
+                    </Table.HeaderCell>
+              <Table.HeaderCell>
+                Delete
+                    </Table.HeaderCell>
+            </Table.Row>
           </Table.Header>
 
           <Table.Body>
@@ -73,36 +121,38 @@ class TracklistTable extends Component {
           </Table.Body>
 
           <Table.Footer fullWidth>
-              <Table.Row>
-                  <Table.HeaderCell colSpan='4'>
-                      <Button floated='right' color='blue' inverted animated>
-                          <Button.Content hidden>Export</Button.Content>
-                          <Button.Content visible>
-                              <Icon name='file outline'/>
-                          </Button.Content>
-                      </Button>
-                      <Button floated='right' color='blue' inverted animated>
-                          <Button.Content hidden>Share</Button.Content>
-                          <Button.Content visible>
-                              <Icon name='share'/>
-                          </Button.Content>
-                      </Button>
-                      <Button size='medium' color='blue' inverted animated onClick={this.addTableRow}>
-                          <Button.Content hidden>Add</Button.Content>
-                          <Button.Content visible>
-                              <Icon name='add circle'/>
-                          </Button.Content>
-                      </Button>
-                      <Button size='medium' color='blue' inverted animated>
-                          <Button.Content hidden>Save</Button.Content>
-                          <Button.Content visible>
-                              <Icon name='save'/>
-                          </Button.Content>
-                      </Button>
-                  </Table.HeaderCell>
-              </Table.Row>
+            <Table.Row>
+              <Table.HeaderCell colSpan='5'>
+                <Button floated='right' color='blue' inverted animated>
+                  <Button.Content hidden>Export</Button.Content>
+                  <Button.Content visible>
+                    <Icon name='file outline' />
+                  </Button.Content>
+                </Button>
+                <Button floated='right' color='blue' inverted animated>
+                  <Button.Content hidden>Share</Button.Content>
+                  <Button.Content visible>
+                    <Icon name='share' />
+                  </Button.Content>
+                </Button>
+                <Button size='medium' color='blue' inverted animated onClick={this.addTabletrack}>
+                  <Button.Content hidden>Add</Button.Content>
+                  <Button.Content visible>
+                    <Icon name='add circle' />
+                  </Button.Content>
+                </Button>
+                <Button size='medium' color='blue' inverted animated>
+                  <Button.Content hidden>Save</Button.Content>
+                  <Button.Content visible>
+                    <Icon name='save' />
+                  </Button.Content>
+                </Button>
+              </Table.HeaderCell>
+            </Table.Row>
           </Table.Footer>
-      </Table>
+        </Table>
+
+      </Dimmer.Dimmable>
     );
   }
 }

@@ -1,14 +1,13 @@
 import React from 'react';
 import { List, Image, Icon } from 'semantic-ui-react';
 
-function SearchResults(props) {
-  const { results, searchValue } = props;
-  console.log(results);
+function SearchResults({ results, searchValue }) {
+
   return (
     <div>
       {
         (() => {
-          if(searchValue.length > 3 && results.length > 3) {
+          if (searchValue.length > 3 && results.length > 3) {
             return (
               <List>
                 {results.map((result) => {
@@ -28,7 +27,7 @@ function SearchResults(props) {
                 })}
               </List>
             );
-          } else if(searchValue.length > 0 && searchValue.length <= 3) {
+          } else if (searchValue.length > 0 && searchValue.length <= 3) {
             return <h3>No Results</h3>;
           } else {
             return <h3>Enter a search term</h3>;

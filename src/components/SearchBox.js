@@ -38,6 +38,7 @@ class SearchBox extends Component {
     .then(res => {
       const results = res.data.results.map(obj => obj);
       this.setState({ results });
+      console.log(results);
     });
   }
 

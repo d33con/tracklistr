@@ -1,3 +1,7 @@
+* {
+  box-sizing: unset;
+}  
+
 .b-app {
     text-align: center;
 }
