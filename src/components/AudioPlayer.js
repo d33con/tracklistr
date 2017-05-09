@@ -1,19 +1,19 @@
+// @flow
 import React from 'react';
-import Controls from './Controls';
 import { Card, Grid, Image } from 'semantic-ui-react';
+import Controls from './Controls';
+import '../style/AudioPlayer.css';
 
 import coverImg from '../img/test.jpg';
 
-import '../style/AudioPlayer.css';
-
-const mixArtist = "DJ Advance";
-const mixTitle = "Example mix May 2017";
+const mixArtist = 'DJ Advance';
+const mixTitle = 'Example mix May 2017';
 
 function AudioPlayer() {
   return (
-    <Grid centered columns={2} padded='vertically'>
+    <Grid centered columns={2} padded="vertically">
       <Grid.Column>
-        <Card raised fluid color='blue' className="b-audio-player">
+        <Card raised fluid color="blue" className="b-audio-player">
           <Card.Content>
             <Image src={coverImg} className="b-audio-player--cover-img" />
             <Card.Header content={mixArtist} />
