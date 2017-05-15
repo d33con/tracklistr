@@ -1,20 +1,38 @@
-// @flow
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
 
 import ProgressBar from './ProgressBar';
+import AddTrackModal from './AddTrackModal';
+
+import '../style/Controls.css';
 
 class Controls extends Component {
-  constructor(props) {
-    super(props);
+  toggleAudio: () => void;
+  handleModalClick: () => void;
+  updateTrackPosition: () => void;
+  audio: () => void;
+  audioSrc: () => void;
+
+  constructor() {
+    super();
     this.state = {
       audioPlaying: false,
       duration: 0,
       currentTime: 0,
+      addingTrack: false,
+      addingTrackAtTime: 0,
     };
     this.toggleAudio = this.toggleAudio.bind(this);
     this.updateTrackPosition = this.updateTrackPosition.bind(this);
+    this.handleModalClick = this.handleModalClick.bind(this);
   }
+
+  state: {
+    audioPlaying: boolean,
+    duration: number,
+    currentTime: number,
+    addingTrack: boolean
+  };
 
   componentDidMount() {
     this.audioSrc.addEventListener('loadedmetadata', (e) => {
@@ -38,15 +56,22 @@ class Controls extends Component {
     });
   }
 
-  updateTrackPosition(percent) {
+  updateTrackPosition(percent: number) {
     const currentTime = Math.floor(this.state.duration * (percent / 100));
     this.setState({ currentTime });
     this.audioSrc.currentTime = currentTime;
   }
 
+  handleModalClick() {
+    this.setState({
+      addingTrack: !this.state.addingTrack,
+      addingTrackAtTime: this.state.currentTime,
+    });
+  }
+
   render() {
     return (
-      <div className="audio-player-controls">
+      <div className="b-audio-player-controls">
         <audio
           ref={audio => this.audioSrc = audio}
           className="audio-player--file"
@@ -59,11 +84,35 @@ class Controls extends Component {
         />
         <Button.Group labeled>
           {this.state.audioPlaying
-            ? <Button icon="pause" content="Pause" onClick={this.toggleAudio} />
-            : <Button icon="play" content="Play" onClick={this.toggleAudio} />}
-          <Button icon="open folder" content="Open" />
-          <Button icon="add" content="Add track here" />
+            ? <Button
+              icon="pause"
+              content="Pause"
+              size="large"
+              onClick={this.toggleAudio}
+            />
+            : <Button
+              icon="play"
+              content="Play"
+              size="large"
+              onClick={this.toggleAudio}
+            />}
+          <Button icon="open folder" content="Open" size="large" />
         </Button.Group>
+        <div className="b-add-track">
+          <Button
+            icon="add"
+            color="green"
+            size="large"
+            inverted
+            content="Add track at current timestamp"
+            onClick={this.handleModalClick}
+          />
+          <AddTrackModal
+            shown={this.state.addingTrack}
+            onClose={this.handleModalClick}
+            currentTime={this.state.addingTrackAtTime}
+          />
+        </div>
       </div>
     );
   }

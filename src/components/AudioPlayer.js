@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { Card, Grid, Image } from 'semantic-ui-react';
 import Controls from './Controls';

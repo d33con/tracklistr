@@ -1,23 +1,19 @@
-* {
-  box-sizing: unset;
-}  
-
 .b-app {
-    text-align: center;
+  text-align: center;
 }
 
 .b-app-header {
-    background-color: #222;
-    height: 6rem;
-    padding: 1rem;
-    color: white;
+  background-color: #222;
+  height: 6rem;
+  padding: 1rem;
+  color: white;
 }
 
 .b-app-header--title {
-    font-size: 3rem;
-    padding-top: 1rem;
+  font-size: 3rem;
+  padding-top: 1rem;
 }
 
 .b-app-body {
-    margin: 3rem 0;
+  margin: 3rem 0;
 }

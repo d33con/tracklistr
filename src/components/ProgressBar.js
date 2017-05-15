@@ -1,27 +1,31 @@
-// @flow
 import React, { Component } from 'react';
 import '../style/ProgressBar.css';
 
 class ProgressBar extends Component {
-  constructor(props) {
+  getTrackPosition: () => void;
+  convertTimesToString: () => void;
+  progressBar: () => void;
+
+  constructor(
+    props: { duration: number, currentTime: number, handleClick: Function },
+  ) {
     super(props);
 
     this.getTrackPosition = this.getTrackPosition.bind(this);
-    this.convertTimesToString = this.convertTimesToString.bind(this);
   }
 
-  convertTimesToString(time) {
-    const minsLeft = Math.floor(time / 60);
-    const secsLeft = time % 60;
-    return `${minsLeft}:${secsLeft < 10 ? '0' : ''}${secsLeft}`;
-  }
-
-  getTrackPosition(e) {
+  getTrackPosition(e: Object) {
     const elPosition = this.progressBar.getBoundingClientRect();
     const clickPoint =
       (e.clientX - elPosition.left) / e.currentTarget.offsetWidth;
     const clickPercent = clickPoint * this.props.duration;
     this.props.handleClick(clickPercent);
+  }
+
+  convertTimesToString(time: number) {
+    const minsLeft = Math.floor(time / 60);
+    const secsLeft = time % 60;
+    return `${minsLeft}:${secsLeft < 10 ? '0' : ''}${secsLeft}`;
   }
 
   render() {
