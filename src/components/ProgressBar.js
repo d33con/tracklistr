@@ -7,7 +7,11 @@ class ProgressBar extends Component {
   progressBar: () => void;
 
   constructor(
-    props: { duration: number, currentTime: number, handleClick: Function },
+    props: {
+      duration: number,
+      currentTime: number,
+      handleClick: Function
+    },
   ) {
     super(props);
 

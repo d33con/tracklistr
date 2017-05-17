@@ -5,10 +5,12 @@ import '../style/AudioPlayer.css';
 
 import coverImg from '../img/test.jpg';
 
-const mixArtist = 'DJ Advance';
-const mixTitle = 'Example mix May 2017';
+const mixArtist: string = 'DJ Advance';
+const mixTitle: string = 'Example mix May 2017';
 
-function AudioPlayer() {
+function AudioPlayer(
+  props: { currentTracklist: Array<Track>, addReleaseToTracklist: Function },
+) {
   return (
     <Grid centered columns={2} padded="vertically">
       <Grid.Column>
@@ -19,7 +21,10 @@ function AudioPlayer() {
             <Card.Content description={mixTitle} />
           </Card.Content>
           <Card.Content extra>
-            <Controls />
+            <Controls
+              currentTracklist={props.currentTracklist}
+              addReleaseToTracklist={props.addReleaseToTracklist}
+            />
           </Card.Content>
         </Card>
       </Grid.Column>

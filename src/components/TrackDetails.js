@@ -1,27 +1,36 @@
 import React from 'react';
 import { Form, Input } from 'semantic-ui-react';
 
-function componentName(
+import TimeInput from './Form/TimeInput';
+
+const onChange = () => {
+  console.log('changed');
+};
+
+function TrackDetails(
   props: {
     trackTime: string,
-    trackTitle: string,
-    trackUrl: string,
-    trackLabel: string
+    currentlySelectedSearchResult: Object
   },
 ) {
-  const { trackTime, trackTitle, trackUrl, trackLabel } = props;
+  const { trackTime, currentlySelectedSearchResult } = props;
   return (
     <Form>
       <Form.Group widths="equal">
-        <Form.Input label="Time" value={trackTime} />
-        <Form.Input label="Title" value={trackTitle} />
-        <Form.Input label="Label" value={trackLabel} />
+        <TimeInput
+          label="Time"
+          value={trackTime}
+          name="Time"
+          onChange={onChange}
+        />
+        <Form.Input label="Title" value="Title" />
+        <Form.Input label="Label" />
         <Form.Input label="Track Link">
-          <Input label="www.discogs.com/" value={trackUrl} />
+          <Input label="www.discogs.com/" value="Link" />
         </Form.Input>
       </Form.Group>
     </Form>
   );
 }
 
-export default componentName;
+export default TrackDetails;

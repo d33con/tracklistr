@@ -7,31 +7,29 @@ import AddTrackModal from './AddTrackModal';
 import '../style/Controls.css';
 
 class Controls extends Component {
-  toggleAudio: () => void;
-  handleModalClick: () => void;
-  updateTrackPosition: () => void;
-  audio: () => void;
-  audioSrc: () => void;
-
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       audioPlaying: false,
       duration: 0,
       currentTime: 0,
       addingTrack: false,
       addingTrackAtTime: 0,
+      currentTracklist: props.currentTracklist,
     };
     this.toggleAudio = this.toggleAudio.bind(this);
     this.updateTrackPosition = this.updateTrackPosition.bind(this);
-    this.handleModalClick = this.handleModalClick.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.addReleaseToTracklist = this.addReleaseToTracklist.bind(this);
   }
 
   state: {
     audioPlaying: boolean,
     duration: number,
     currentTime: number,
-    addingTrack: boolean
+    addingTrack: boolean,
+    addingTrackAtTime: number
   };
 
   componentDidMount() {
@@ -40,6 +38,19 @@ class Controls extends Component {
       this.setState({ duration });
     });
   }
+
+  props: {
+    currentTracklist: Array<Track>,
+    addReleaseToTracklist: () => void
+  };
+
+  toggleAudio: () => void;
+  updateTrackPosition: () => void;
+  openModal: () => void;
+  closeModal: () => void;
+  addReleaseToTracklist: () => void;
+  audio: () => void;
+  audioSrc: () => void;
 
   toggleAudio() {
     this.setState(prevState => ({ audioPlaying: !prevState.audioPlaying }));
@@ -62,11 +73,23 @@ class Controls extends Component {
     this.audioSrc.currentTime = currentTime;
   }
 
-  handleModalClick() {
+  openModal() {
     this.setState({
-      addingTrack: !this.state.addingTrack,
+      addingTrack: true,
       addingTrackAtTime: this.state.currentTime,
     });
+  }
+
+  closeModal() {
+    this.setState({
+      addingTrack: false,
+    });
+  }
+
+  addReleaseToTracklist(track: Array<Track>) {
+    const trackTime: number = this.state.addingTrackAtTime;
+    this.props.addReleaseToTracklist(track, trackTime);
+    this.closeModal();
   }
 
   render() {
@@ -105,12 +128,13 @@ class Controls extends Component {
             size="large"
             inverted
             content="Add track at current timestamp"
-            onClick={this.handleModalClick}
+            onClick={this.openModal}
           />
           <AddTrackModal
             shown={this.state.addingTrack}
-            onClose={this.handleModalClick}
+            onClose={this.closeModal}
             currentTime={this.state.addingTrackAtTime}
+            addReleaseToTracklist={this.addReleaseToTracklist}
           />
         </div>
       </div>

@@ -2,56 +2,64 @@ import React, { Component } from 'react';
 import { Button, Modal } from 'semantic-ui-react';
 
 import SearchBox from './SearchBox';
-import TrackDetails from './TrackDetails';
 
 class AddTrackModal extends Component {
-  onSubmit: () => void;
-  handleOnCancel: () => void;
-
   constructor(
-    props: { currentTime: number, onClose: Function, shown: boolean },
+    props: {
+      currentTime: number,
+      onClose: Function,
+      shown: boolean,
+      addReleaseToTracklist: Function
+    },
   ) {
     super(props);
-    this.state = {
-      open: this.props.shown,
-    };
-    this.onSubmit = this.onSubmit.bind(this);
-    this.handleOnCancel = this.handleOnCancel.bind(this);
+
+    this.addReleaseToTracklist = this.addReleaseToTracklist.bind(this);
   }
 
-  state: { open: boolean };
+  state: {
+    currentTracklist: Array<Track>
+  };
+  addReleaseToTracklist: () => void;
 
-  onSubmit() {
-    console.log('submitted');
-    this.props.onClose();
-  }
-
-  handleOnCancel() {
+  addReleaseToTracklist(track: Array<Track>) {
+    this.props.addReleaseToTracklist(track);
     this.props.onClose();
   }
 
   render() {
     const { shown, onClose, currentTime } = this.props;
+    let timeInMinsSecs = '';
+    const minsLeft = Math.floor(currentTime / 60);
+    const secsLeft = currentTime % 60;
+    timeInMinsSecs = `${minsLeft}:${secsLeft < 10 ? '0' : ''}${secsLeft}`;
+
     return (
       <Modal size="fullscreen" open={shown} onClose={onClose} dimmer>
         <Modal.Header>
-          Add New Track
+          Add New Track at {timeInMinsSecs}
         </Modal.Header>
         <Modal.Content>
-          <SearchBox />
-          <TrackDetails trackTime={currentTime} />
+          <SearchBox
+            addReleaseToTracklist={result =>
+              this.props.addReleaseToTracklist(result)}
+          />
         </Modal.Content>
         <Modal.Actions>
-          <Button negative onClick={this.handleOnCancel}>
-            Cancel
-          </Button>
           <Button
+            negative
+            onClick={this.props.onClose}
+            icon="close"
+            labelPosition="right"
+            content="Close"
+          />
+          {/* <Button
             positive
             icon="checkmark"
             labelPosition="right"
             content="Save"
             onClick={this.onSubmit}
-          />
+          />*/}
         </Modal.Actions>
       </Modal>
     );

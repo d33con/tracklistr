@@ -7,11 +7,8 @@ import SearchResults from './SearchResults';
 import '../style/SearchBox.css';
 
 class SearchBox extends Component {
-  getSearchSuggestions: () => void;
-  handleChange: () => void;
-
-  constructor() {
-    super();
+  constructor(props: { addReleaseToTracklist: Function }) {
+    super(props);
 
     this.state = {
       results: [],
@@ -20,20 +17,13 @@ class SearchBox extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.getSearchSuggestions = this.getSearchSuggestions.bind(this);
+    this.addReleaseToTracklist = this.addReleaseToTracklist.bind(this);
   }
 
   state: {
     results: Array<mixed>,
     searchValue: string
   };
-
-  handleChange(e: Object & { currentTarget: { value: string } }) {
-    this.setState({
-      searchValue: e.currentTarget.value,
-    });
-    e.currentTarget.value.length > 3 &&
-      this.getSearchSuggestions(e.currentTarget.value);
-  }
 
   getSearchSuggestions(value: string) {
     axios
@@ -48,8 +38,22 @@ class SearchBox extends Component {
       .then((res) => {
         const results = res.data.results.map(obj => obj);
         this.setState({ results });
-        console.log(results);
       });
+  }
+  getSearchSuggestions: () => void;
+  handleChange: () => void;
+  addReleaseToTracklist: () => void;
+
+  handleChange(e: Object & { currentTarget: { value: string } }) {
+    this.setState({
+      searchValue: e.currentTarget.value,
+    });
+    e.currentTarget.value.length > 3 &&
+      this.getSearchSuggestions(e.currentTarget.value);
+  }
+
+  addReleaseToTracklist(result: Object) {
+    this.props.addReleaseToTracklist(result);
   }
 
   render() {
@@ -66,6 +70,7 @@ class SearchBox extends Component {
         <SearchResults
           results={this.state.results}
           searchValue={this.state.searchValue}
+          addReleaseToTracklist={this.addReleaseToTracklist}
         />
       </Segment>
     );

@@ -1,10 +1,14 @@
 import React from 'react';
 import { List, Image, Icon } from 'semantic-ui-react';
 
-function SearchResults({
-  results,
-  searchValue,
-}: { results: Object, searchValue: string }) {
+function SearchResults(
+  props: {
+    results: Object,
+    searchValue: string,
+    addReleaseToTracklist: Function
+  },
+) {
+  const { results, searchValue, addReleaseToTracklist } = props;
   return (
     <div>
       {(() => {
@@ -35,6 +39,8 @@ function SearchResults({
                         name="plus square outline"
                         size="large"
                         color="blue"
+                        link
+                        onClick={() => addReleaseToTracklist({ result })}
                       />
                     </List.Content>
                   </List.Item>

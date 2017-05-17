@@ -9,7 +9,13 @@ function TimeInput({
 }: { label: string, value: string, name: string, onChange: Function }) {
   return (
     <Form.Field>
-      <Form.Input label={label} value={value} name={name} onChange={onChange} />
+      <Form.Input
+        label={label}
+        value={value}
+        name={name}
+        onChange={onChange}
+        placeholder="Enter format mm:ss"
+      />
     </Form.Field>
   );
 }
