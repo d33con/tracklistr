@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Divider, Input, Segment } from 'semantic-ui-react';
 
 import SearchResults from './SearchResults';
 
-import '../style/SearchBox.css';
+import '../../style/SearchBox.css';
 
 class SearchBox extends Component {
-  constructor(props: { addReleaseToTracklist: Function }) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -20,12 +21,7 @@ class SearchBox extends Component {
     this.addReleaseToTracklist = this.addReleaseToTracklist.bind(this);
   }
 
-  state: {
-    results: Array<mixed>,
-    searchValue: string
-  };
-
-  getSearchSuggestions(value: string) {
+  getSearchSuggestions(value) {
     axios
       .get('https://api.discogs.com/database/search', {
         params: {
@@ -40,19 +36,18 @@ class SearchBox extends Component {
         this.setState({ results });
       });
   }
-  getSearchSuggestions: () => void;
-  handleChange: () => void;
-  addReleaseToTracklist: () => void;
 
-  handleChange(e: Object & { currentTarget: { value: string } }) {
+  handleChange(e) {
     this.setState({
       searchValue: e.currentTarget.value,
     });
-    e.currentTarget.value.length > 3 &&
-      this.getSearchSuggestions(e.currentTarget.value);
+    return (
+      e.currentTarget.value.length > 3 &&
+      this.getSearchSuggestions(e.currentTarget.value)
+    );
   }
 
-  addReleaseToTracklist(result: Object) {
+  addReleaseToTracklist(result) {
     this.props.addReleaseToTracklist(result);
   }
 
@@ -76,5 +71,9 @@ class SearchBox extends Component {
     );
   }
 }
+
+SearchBox.propTypes = {
+  addReleaseToTracklist: PropTypes.func.isRequired,
+};
 
 export default SearchBox;

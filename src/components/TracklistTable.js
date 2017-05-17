@@ -5,31 +5,11 @@ import { Button, Icon, Table, Dimmer } from 'semantic-ui-react';
 import EditTrack from './EditTrack';
 
 class TracklistTable extends Component {
-  addTableTrack: () => void;
-  editTrack: () => void;
-  deleteTrack: () => void;
-  updateTrack: () => void;
-  closeDimmer: () => void;
-  constructor() {
-    super();
+  constructor(props: { currentTracklist: Object }) {
+    super(props);
 
     this.state = {
-      tracks: [
-        {
-          trackTime: '0:00',
-          trackTitle: 'Caroline K - Tracking With Close Ups',
-          trackUrl: 'Caroline-K-Now-Wait-For-Last-Year/release/10182988',
-          trackLabel: 'Blackest Ever Black',
-          releaseId: 10182988,
-        },
-        {
-          trackTime: '1:00',
-          trackTitle: 'Foul Play - Being With You (Foul Play remix)',
-          trackUrl: 'Foul-Play-Vol-4-Remixes-Part-I/release/125038',
-          trackLabel: 'Moving Shadow',
-          releaseId: 125038,
-        },
-      ],
+      tracklist: props.currentTracklist,
       showDimmer: false,
       editing: [],
     };
@@ -42,21 +22,20 @@ class TracklistTable extends Component {
   }
 
   state: {
-    tracks: Array<mixed> & {
-      trackTime: string,
-      trackTitle: string,
-      trackUrl: string,
-      trackLabel: string,
-      releaseId: number
-    },
+    tracklist: Object,
     showDimmer: boolean,
-    editing: Array<mixed>
+    editing: ?Array<Track>
   };
+  addTableTrack: () => void;
+  editTrack: () => void;
+  deleteTrack: () => void;
+  updateTrack: () => void;
+  closeDimmer: () => void;
 
   addTableTrack(e: Object) {
     e.preventDefault();
-    this.setState(prevState => ({
-      tracks: prevState.tracks.concat({
+    this.setState((prevState: Object) => ({
+      tracklist: prevState.tracklist.concat({
         trackTime: '',
         trackTitle: '',
         trackUrl: '',
@@ -69,21 +48,21 @@ class TracklistTable extends Component {
   editTrack(id: number) {
     this.setState({
       showDimmer: true,
-      editing: this.state.tracks.find(tracks => tracks.releaseId === id),
+      editing: this.state.tracklist.find(track => track.releaseId === id),
     });
   }
 
   deleteTrack(id: number) {
     this.setState({
-      tracks: this.state.tracks.filter(tracks => tracks.releaseId !== id),
+      tracklist: this.state.tracklist.filter(track => track.releaseId !== id),
     });
   }
 
   updateTrack(formPayload: Object) {
     console.log(formPayload);
     this.setState({
-      tracks: [
-        ...this.state.tracks.filter(
+      tracklist: [
+        ...this.state.tracklist.filter(
           tracks => tracks.releaseId !== formPayload.releaseId,
         ),
         formPayload,
@@ -98,8 +77,8 @@ class TracklistTable extends Component {
   }
 
   render() {
-    const { showDimmer, tracks } = this.state;
-    const tableRows = tracks.map(track => (
+    const { showDimmer, tracklist } = this.state;
+    const tableRows = tracklist.map(track => (
       <Table.Row key={track.releaseId}>
         <Table.Cell>
           {track.trackTime}

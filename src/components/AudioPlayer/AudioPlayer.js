@@ -1,16 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Card, Grid, Image } from 'semantic-ui-react';
 import Controls from './Controls';
-import '../style/AudioPlayer.css';
+import '../../style/AudioPlayer.css';
 
-import coverImg from '../img/test.jpg';
+import coverImg from '../../img/test.jpg';
 
-const mixArtist: string = 'DJ Advance';
-const mixTitle: string = 'Example mix May 2017';
+const mixArtist = 'DJ Advance';
+const mixTitle = 'Example mix May 2017';
 
-function AudioPlayer(
-  props: { currentTracklist: Array<Track>, addReleaseToTracklist: Function },
-) {
+function AudioPlayer(props) {
   return (
     <Grid centered columns={2} padded="vertically">
       <Grid.Column>
@@ -31,5 +30,10 @@ function AudioPlayer(
     </Grid>
   );
 }
+
+AudioPlayer.propTypes = {
+  currentTracklist: PropTypes.arrayOf(PropTypes.object).isRequired,
+  addReleaseToTracklist: PropTypes.func.isRequired,
+};
 
 export default AudioPlayer;

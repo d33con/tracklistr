@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 
 import ProgressBar from './ProgressBar';
 import AddTrackModal from './AddTrackModal';
 
-import '../style/Controls.css';
+import '../../style/Controls.css';
 
 class Controls extends Component {
   constructor(props) {
@@ -24,14 +25,6 @@ class Controls extends Component {
     this.addReleaseToTracklist = this.addReleaseToTracklist.bind(this);
   }
 
-  state: {
-    audioPlaying: boolean,
-    duration: number,
-    currentTime: number,
-    addingTrack: boolean,
-    addingTrackAtTime: number
-  };
-
   componentDidMount() {
     this.audioSrc.addEventListener('loadedmetadata', (e) => {
       const duration = Math.floor(e.currentTarget.duration);
@@ -39,22 +32,8 @@ class Controls extends Component {
     });
   }
 
-  props: {
-    currentTracklist: Array<Track>,
-    addReleaseToTracklist: () => void
-  };
-
-  toggleAudio: () => void;
-  updateTrackPosition: () => void;
-  openModal: () => void;
-  closeModal: () => void;
-  addReleaseToTracklist: () => void;
-  audio: () => void;
-  audioSrc: () => void;
-
   toggleAudio() {
     this.setState(prevState => ({ audioPlaying: !prevState.audioPlaying }));
-    this.state.audioPlaying ? this.audioSrc.pause() : this.audioSrc.play();
     this.audioSrc.addEventListener('timeupdate', (e) => {
       const currentTime = Math.floor(e.currentTarget.currentTime);
       this.setState({ currentTime });
@@ -65,9 +44,12 @@ class Controls extends Component {
         currentTime: 0,
       });
     });
+    return this.state.audioPlaying
+      ? this.audioSrc.pause()
+      : this.audioSrc.play();
   }
 
-  updateTrackPosition(percent: number) {
+  updateTrackPosition(percent) {
     const currentTime = Math.floor(this.state.duration * (percent / 100));
     this.setState({ currentTime });
     this.audioSrc.currentTime = currentTime;
@@ -86,8 +68,8 @@ class Controls extends Component {
     });
   }
 
-  addReleaseToTracklist(track: Array<Track>) {
-    const trackTime: number = this.state.addingTrackAtTime;
+  addReleaseToTracklist(track) {
+    const trackTime = this.state.addingTrackAtTime;
     this.props.addReleaseToTracklist(track, trackTime);
     this.closeModal();
   }
@@ -141,5 +123,10 @@ class Controls extends Component {
     );
   }
 }
+
+Controls.propTypes = {
+  currentTracklist: PropTypes.arrayOf(PropTypes.object).isRequired,
+  addReleaseToTracklist: PropTypes.func.isRequired,
+};
 
 export default Controls;

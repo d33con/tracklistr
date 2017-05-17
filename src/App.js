@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'semantic-ui-react';
 
-import AudioPlayer from './components/AudioPlayer';
+import AudioPlayer from './components/AudioPlayer/AudioPlayer';
 import TracklistTable from './components/TracklistTable';
 
 import './style/App.css';
@@ -31,17 +31,11 @@ class App extends Component {
     this.addReleaseToTracklist = this.addReleaseToTracklist.bind(this);
   }
 
-  state: {
-    tracklist: Array<Track>
-  };
-
   componentDidMount() {
     // update state
   }
 
-  addReleaseToTracklist: () => void;
-
-  addReleaseToTracklist(track: Object, trackTime: number) {
+  addReleaseToTracklist(track, trackTime) {
     const { title, uri, label, id } = track.result;
     this.setState(prevState => ({
       tracklist: prevState.tracklist.concat({
@@ -65,7 +59,7 @@ class App extends Component {
             currentTracklist={this.state.tracklist}
             addReleaseToTracklist={this.addReleaseToTracklist}
           />
-          <TracklistTable />
+          <TracklistTable currentTracklist={this.state.tracklist} />
         </Container>
       </div>
     );

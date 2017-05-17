@@ -1,13 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { List, Image, Icon } from 'semantic-ui-react';
 
-function SearchResults(
-  props: {
-    results: Object,
-    searchValue: string,
-    addReleaseToTracklist: Function
-  },
-) {
+function SearchResults(props) {
   const { results, searchValue, addReleaseToTracklist } = props;
   return (
     <div>
@@ -15,7 +10,7 @@ function SearchResults(
         if (searchValue.length > 3 && results.length > 3) {
           return (
             <List>
-              {results.map((result: Object) => {
+              {results.map((result) => {
                 const { trackLabel, id, thumb, uri, title, format } = result;
                 return (
                   <List.Item key={id}>
@@ -56,5 +51,11 @@ function SearchResults(
     </div>
   );
 }
+
+SearchResults.propTypes = {
+  results: PropTypes.arrayOf(PropTypes.object).isRequired,
+  searchValue: PropTypes.string.isRequired,
+  addReleaseToTracklist: PropTypes.func.isRequired,
+};
 
 export default SearchResults;
