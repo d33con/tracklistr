@@ -1,74 +1,82 @@
-// @flow
-import React, { Component } from 'react';
-import { Button, Icon, Table, Dimmer } from 'semantic-ui-react';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import v4 from "uuid";
+import { Button, Icon, Table, Dimmer } from "semantic-ui-react";
+import convertTimeToString from "../../HelperFunctions/ConvertTimeToString";
+//import convertStringToTime from "../../HelperFunctions/ConvertStringToTime";
 
-import EditTrack from './EditTrack';
+import EditTrack from "./EditTrack";
 
 class TracklistTable extends Component {
-  constructor(props: { currentTracklist: Object }) {
+  constructor(props) {
     super(props);
 
     this.state = {
-      tracklist: props.currentTracklist,
+      tracklist: [],
       showDimmer: false,
-      editing: [],
+      editing: {}
     };
 
     this.addTableTrack = this.addTableTrack.bind(this);
     this.editTrack = this.editTrack.bind(this);
     this.deleteTrack = this.deleteTrack.bind(this);
     this.updateTrack = this.updateTrack.bind(this);
+    this.updateTracklistTable = this.updateTracklistTable.bind(this);
     this.closeDimmer = this.closeDimmer.bind(this);
   }
 
-  state: {
-    tracklist: Object,
-    showDimmer: boolean,
-    editing: ?Array<Track>
-  };
-  addTableTrack: () => void;
-  editTrack: () => void;
-  deleteTrack: () => void;
-  updateTrack: () => void;
-  closeDimmer: () => void;
+  componentDidMount() {
+    this.updateTracklistTable(this.props.currentTracklist);
+  }
 
-  addTableTrack(e: Object) {
+  componentWillReceiveProps(nextProps) {
+    this.updateTracklistTable(nextProps.currentTracklist);
+  }
+
+  updateTracklistTable(newTracklist) {
+    const sortedTracklist = newTracklist.sort(
+      (a, b) => (a.trackTime > b.trackTime ? 1 : -1)
+    );
+    this.setState({
+      tracklist: sortedTracklist
+    });
+  }
+
+  addTableTrack(e) {
     e.preventDefault();
-    this.setState((prevState: Object) => ({
+    this.setState(prevState => ({
       tracklist: prevState.tracklist.concat({
-        trackTime: '',
-        trackTitle: '',
-        trackUrl: '',
-        trackLabel: '',
-        releaseId: Date.now(),
-      }),
+        trackTime: 0,
+        trackTitle: "",
+        trackUrl: "",
+        trackLabel: "",
+        releaseId: v4()
+      })
     }));
   }
 
-  editTrack(id: number) {
+  editTrack(id) {
     this.setState({
       showDimmer: true,
-      editing: this.state.tracklist.find(track => track.releaseId === id),
+      editing: this.state.tracklist.find(track => track.releaseId === id)
     });
   }
 
-  deleteTrack(id: number) {
+  deleteTrack(id) {
     this.setState({
-      tracklist: this.state.tracklist.filter(track => track.releaseId !== id),
+      tracklist: this.state.tracklist.filter(track => track.releaseId !== id)
     });
   }
 
-  updateTrack(formPayload: Object) {
-    console.log(formPayload);
+  updateTrack(formPayload) {
     this.setState({
       tracklist: [
         ...this.state.tracklist.filter(
-          tracks => tracks.releaseId !== formPayload.releaseId,
+          tracks => tracks.releaseId !== formPayload.releaseId
         ),
-        formPayload,
-      ],
+        formPayload
+      ]
     });
-    console.log(this.state);
     this.closeDimmer();
   }
 
@@ -81,7 +89,7 @@ class TracklistTable extends Component {
     const tableRows = tracklist.map(track => (
       <Table.Row key={track.releaseId}>
         <Table.Cell>
-          {track.trackTime}
+          {convertTimeToString(track.trackTime)}
         </Table.Cell>
         <Table.Cell>
           <a href={`'https://www.discogs.com/${track.trackUrl}'`}>
@@ -116,7 +124,6 @@ class TracklistTable extends Component {
           <EditTrack
             track={this.state.editing}
             updateTrack={this.updateTrack}
-            closeDimmer={this.closeDimmer}
           />
         </Dimmer>
 
@@ -187,5 +194,9 @@ class TracklistTable extends Component {
     );
   }
 }
+
+TracklistTable.propTypes = {
+  currentTracklist: PropTypes.arrayOf(PropTypes.object).isRequired
+};
 
 export default TracklistTable;

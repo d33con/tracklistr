@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import { Divider, Input, Segment } from 'semantic-ui-react';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
+import { Divider, Input, Segment } from "semantic-ui-react";
 
-import SearchResults from './SearchResults';
+import SearchResults from "./SearchResults";
 
-import '../../style/SearchBox.css';
+import "../../style/SearchBox.css";
 
 class SearchBox extends Component {
   constructor(props) {
@@ -13,7 +13,7 @@ class SearchBox extends Component {
 
     this.state = {
       results: [],
-      searchValue: '',
+      searchValue: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -23,15 +23,15 @@ class SearchBox extends Component {
 
   getSearchSuggestions(value) {
     axios
-      .get('https://api.discogs.com/database/search', {
+      .get("https://api.discogs.com/database/search", {
         params: {
           q: value,
-          token: 'OKAFGfTucaaBaUSmmLucyymiHxryMsQjXAhNaDzD',
+          token: "OKAFGfTucaaBaUSmmLucyymiHxryMsQjXAhNaDzD",
           per_page: 10,
-          page: 1,
-        },
+          page: 1
+        }
       })
-      .then((res) => {
+      .then(res => {
         const results = res.data.results.map(obj => obj);
         this.setState({ results });
       });
@@ -39,7 +39,7 @@ class SearchBox extends Component {
 
   handleChange(e) {
     this.setState({
-      searchValue: e.currentTarget.value,
+      searchValue: e.currentTarget.value
     });
     return (
       e.currentTarget.value.length > 3 &&
@@ -55,7 +55,7 @@ class SearchBox extends Component {
     return (
       <Segment padded>
         <Input
-          placeholder="Search Discogs"
+          placeholder="eg. Artist - Title"
           size="huge"
           icon="search"
           value={this.state.searchValue}
@@ -73,7 +73,7 @@ class SearchBox extends Component {
 }
 
 SearchBox.propTypes = {
-  addReleaseToTracklist: PropTypes.func.isRequired,
+  addReleaseToTracklist: PropTypes.func.isRequired
 };
 
 export default SearchBox;

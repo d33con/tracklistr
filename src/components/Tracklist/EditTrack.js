@@ -1,22 +1,21 @@
-import React, { Component } from 'react';
-import { Container, Header, Form } from 'semantic-ui-react';
-import TextInput from './Form/TextInput';
-import TimeInput from './Form/TimeInput';
-import LabeledInput from './Form/LabeledInput';
-
-/* TO-DO
-  get releaseId from URL to use in TracklistTable component state instead of Date.now()
-*/
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import convertStringToTime from "../../HelperFunctions/ConvertStringToTime";
+import convertTimeToString from "../../HelperFunctions/ConvertTimeToString";
+import { Container, Header, Form } from "semantic-ui-react";
+import TextInput from "../Form/TextInput";
+//import TimeInput from "../Form/TimeInput";
+import LabeledInput from "../Form/LabeledInput";
 
 class EditTrack extends Component {
-  constructor(props: Object) {
+  constructor(props) {
     super(props);
     this.state = {
-      trackTime: '',
-      trackTitle: '',
-      trackLabel: '',
-      trackUrl: '',
-      releaseId: 0,
+      trackTime: 0,
+      trackTitle: "",
+      trackLabel: "",
+      trackUrl: "",
+      releaseId: 0
     };
     this.handleTimeChange = this.handleTimeChange.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
@@ -25,33 +24,25 @@ class EditTrack extends Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
-  state: {
-    trackTime: string,
-    trackTitle: string,
-    trackLabel: string,
-    trackUrl: string,
-    releaseId: number
-  };
-
   componentDidMount() {
     const {
       trackTime,
       trackTitle,
       trackLabel,
       trackUrl,
-      releaseId,
+      releaseId
     } = this.props.track;
     this.setState({
       trackTime,
       trackTitle,
       trackLabel,
       trackUrl,
-      releaseId,
+      releaseId
     });
   }
 
   handleTimeChange(e) {
-    this.setState({ trackTime: e.target.value });
+    this.setState({ trackTime: convertStringToTime(e.target.value) });
   }
 
   handleTitleChange(e) {
@@ -73,7 +64,7 @@ class EditTrack extends Component {
       trackTitle: this.state.trackTitle,
       trackLabel: this.state.trackLabel,
       trackUrl: this.state.trackUrl,
-      releaseId: this.state.releaseId,
+      releaseId: this.state.releaseId
     };
     this.props.updateTrack(formPayload);
   }
@@ -82,15 +73,17 @@ class EditTrack extends Component {
     const { trackTime, trackTitle, trackUrl, trackLabel } = this.state;
     return (
       <Container>
-        <Header as="h1" inverted>Edit Track</Header>
+        <Header as="h1" inverted>
+          Edit Track at {convertTimeToString(trackTime)}
+        </Header>
         <Form size="large" inverted>
-          <TimeInput
+          {/*<TimeInput
             label="Time"
             width={2}
-            value={trackTime}
+            value={convertTimeToString(trackTime)}
             name="trackTime"
             onChange={this.handleTimeChange}
-          />
+          />*/}
           <TextInput
             label="Title"
             value={trackTitle}
@@ -122,5 +115,10 @@ class EditTrack extends Component {
     );
   }
 }
+
+EditTrack.propTypes = {
+  track: PropTypes.object.isRequired,
+  updateTrack: PropTypes.func
+};
 
 export default EditTrack;

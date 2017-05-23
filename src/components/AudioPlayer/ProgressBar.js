@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import convertTimesToString from '../../HelperFunctions/ConvertTimesToString';
-import '../../style/ProgressBar.css';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import convertTimeToString from "../../HelperFunctions/ConvertTimeToString";
+import "../../style/ProgressBar.css";
 
 class ProgressBar extends Component {
   constructor(props) {
@@ -14,7 +14,8 @@ class ProgressBar extends Component {
     const elPosition = this.progressBar.getBoundingClientRect();
     const clickPoint =
       (e.clientX - elPosition.left) / e.currentTarget.offsetWidth;
-    const clickPercent = clickPoint * this.props.duration;
+    const clickPercent =
+      clickPoint * this.props.duration / this.props.duration * 100;
     this.props.handleClick(clickPercent);
   }
 
@@ -22,10 +23,10 @@ class ProgressBar extends Component {
     let { currentTime, duration } = this.props;
     const percentCompleted = currentTime / duration * 100;
     const barStyle = {
-      width: `${percentCompleted}%`,
+      width: `${percentCompleted}%`
     };
-    currentTime = convertTimesToString(currentTime);
-    duration = convertTimesToString(duration);
+    currentTime = convertTimeToString(currentTime);
+    duration = convertTimeToString(duration);
 
     return (
       <div
@@ -45,7 +46,7 @@ class ProgressBar extends Component {
 ProgressBar.propTypes = {
   duration: PropTypes.number.isRequired,
   currentTime: PropTypes.number.isRequired,
-  handleClick: PropTypes.func.isRequired,
+  handleClick: PropTypes.func.isRequired
 };
 
 export default ProgressBar;
