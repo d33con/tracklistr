@@ -10,7 +10,6 @@
   font-size: .92857143rem;
   border-radius: .28571429rem;
   margin: 0 0 2.5em;
-  cursor: pointer;
 }
 
 .b-progress-bar {
@@ -21,7 +20,6 @@
   position: relative;
   border-radius: .28571429rem;
   transition: width .15s ease, background-color .15s ease;
-  cursor: pointer;
 }
 
 .b-progress-bar-label {
