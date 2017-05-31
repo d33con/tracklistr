@@ -60,6 +60,7 @@ class SearchBox extends Component {
           icon="search"
           value={this.state.searchValue}
           onChange={this.handleChange}
+          focus={true}
         />
         <Divider horizontal className="b-search-divider">Results</Divider>
         <SearchResults
