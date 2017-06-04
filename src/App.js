@@ -25,10 +25,11 @@ class App extends Component {
 
   addReleaseToTracklist(track, trackTime) {
     const { title, uri, label, id } = track.result;
+    // **CHECK THIS!**
     let nextState = this.state.tracklist.concat({
       trackTime,
       trackTitle: title,
-      trackUrl: `https://www.discogs.com${uri}`,
+      trackUrl: uri,
       trackLabel: label.length && label[0],
       releaseId: id
     });
