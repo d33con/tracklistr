@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import v4 from "uuid";
 import { Button, Icon, Table, Dimmer } from "semantic-ui-react";
 import convertTimeToString from "../../HelperFunctions/ConvertTimeToString";
-//import convertStringToTime from "../../HelperFunctions/ConvertStringToTime";
 
 import EditTrack from "./EditTrack";
 
@@ -34,6 +33,7 @@ class TracklistTable extends Component {
   }
 
   updateTracklistTable(newTracklist) {
+    // **CHECK THIS!**
     const sortedTracklist = newTracklist.sort(
       (a, b) => (a.trackTime > b.trackTime ? 1 : -1)
     );
@@ -78,6 +78,7 @@ class TracklistTable extends Component {
       ]
     });
     this.closeDimmer();
+    this.updateTracklistTable(); // **CHECK THIS!**
   }
 
   closeDimmer() {
@@ -92,7 +93,7 @@ class TracklistTable extends Component {
           {convertTimeToString(track.trackTime)}
         </Table.Cell>
         <Table.Cell>
-          <a href={`'https://www.discogs.com/${track.trackUrl}'`}>
+          <a href={`'https://www.discogs.com${track.trackUrl}'`}>
             {track.trackTitle}
           </a>
         </Table.Cell>
