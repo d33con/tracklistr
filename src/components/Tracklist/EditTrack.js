@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import convertStringToTime from "../../HelperFunctions/ConvertStringToTime";
 import convertTimeToString from "../../HelperFunctions/ConvertTimeToString";
 import { Container, Header, Form } from "semantic-ui-react";
 import TextInput from "../Form/TextInput";
-//import TimeInput from "../Form/TimeInput";
+import TimeInput from "../Form/TimeInput";
 import LabeledInput from "../Form/LabeledInput";
 
 class EditTrack extends Component {
@@ -17,7 +16,8 @@ class EditTrack extends Component {
       trackUrl: "",
       releaseId: 0
     };
-    this.handleTimeChange = this.handleTimeChange.bind(this);
+    this.handleMinutesChange = this.handleMinutesChange.bind(this);
+    this.handleSecondsChange = this.handleSecondsChange.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleLabelChange = this.handleLabelChange.bind(this);
     this.handleTrackUrlChange = this.handleTrackUrlChange.bind(this);
@@ -41,8 +41,16 @@ class EditTrack extends Component {
     });
   }
 
-  handleTimeChange(e) {
-    this.setState({ trackTime: convertStringToTime(e.target.value) });
+  handleMinutesChange(e) {
+    this.setState(prevState => ({
+      trackTime: prevState.trackTime + 60
+    }));
+  }
+
+  handleSecondsChange(e) {
+    this.setState(prevState => ({
+      trackTime: prevState.trackTime + 1
+    }));
   }
 
   handleTitleChange(e) {
@@ -71,19 +79,39 @@ class EditTrack extends Component {
 
   render() {
     const { trackTime, trackTitle, trackUrl, trackLabel } = this.state;
+    const minutes = Math.floor(trackTime / 60);
+    const seconds = trackTime % 60;
+
     return (
       <Container>
         <Header as="h1" inverted>
           Edit Track at {convertTimeToString(trackTime)}
         </Header>
         <Form size="large" inverted>
-          {/*<TimeInput
-            label="Time"
-            width={2}
-            value={convertTimeToString(trackTime)}
-            name="trackTime"
-            onChange={this.handleTimeChange}
-          />*/}
+          <Form.Group inline widths="equal">
+            <label>Time: </label>
+            <TimeInput
+              label="Mins"
+              value={minutes}
+              name={name}
+              type="number"
+              step="1"
+              min="0"
+              width={1}
+              onChange={this.handleMinutesChange}
+            />
+            <TimeInput
+              label="Secs"
+              value={seconds}
+              name={name}
+              type="number"
+              step="1"
+              min="0"
+              max="59"
+              onChange={this.handleSecondsChange}
+              width={1}
+            />
+          </Form.Group>
           <TextInput
             label="Title"
             value={trackTitle}
@@ -98,7 +126,7 @@ class EditTrack extends Component {
           />
           <LabeledInput
             label="Track Link"
-            innerLabel="www.discogs.com/"
+            innerLabel="www.discogs.com"
             value={trackUrl}
             name="trackUrl"
             onChange={this.handleTrackUrlChange}
