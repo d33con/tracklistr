@@ -26,6 +26,7 @@ class SearchBox extends Component {
       .get("https://api.discogs.com/database/search", {
         params: {
           q: value,
+          type: "master",
           token: "OKAFGfTucaaBaUSmmLucyymiHxryMsQjXAhNaDzD",
           per_page: 10,
           page: 1
@@ -34,6 +35,7 @@ class SearchBox extends Component {
       .then(res => {
         const results = res.data.results.map(obj => obj);
         this.setState({ results });
+        console.log(results);
       });
   }
 
@@ -61,6 +63,7 @@ class SearchBox extends Component {
           value={this.state.searchValue}
           onChange={this.handleChange}
           focus={true}
+          fluid
         />
         <Divider horizontal className="b-search-divider">Results</Divider>
         <SearchResults
