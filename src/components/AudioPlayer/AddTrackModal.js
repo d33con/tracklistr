@@ -22,15 +22,8 @@ function AddTrackModal({ shown, onClose, currentTime, addReleaseToTracklist }) {
           onClick={onClose}
           icon="close"
           labelPosition="right"
-          content="Close"
+          content="Cancel"
         />
-        {/* <Button
-            positive
-            icon="checkmark"
-            labelPosition="right"
-            content="Save"
-            onClick={this.onSubmit}
-          />*/}
       </Modal.Actions>
     </Modal>
   );
