@@ -13,11 +13,13 @@ class SearchBox extends Component {
 
     this.state = {
       results: [],
-      searchValue: ""
+      searchValue: "",
+      shown: false
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.getSearchSuggestions = this.getSearchSuggestions.bind(this);
+    this.getReleaseDetails = this.getReleaseDetails.bind(this);
     this.addReleaseToTracklist = this.addReleaseToTracklist.bind(this);
   }
 
@@ -49,6 +51,22 @@ class SearchBox extends Component {
     );
   }
 
+  getReleaseDetails(releaseId) {
+    axios
+      .get("https://api.discogs.com/masters/" + releaseId, {
+        params: {
+          token: "OKAFGfTucaaBaUSmmLucyymiHxryMsQjXAhNaDzD"
+        }
+      })
+      .then(result => {
+        this.setState({
+          result,
+          shown: !this.state.shown
+        });
+        console.log(result);
+      });
+  }
+
   addReleaseToTracklist(result) {
     this.props.addReleaseToTracklist(result);
   }
@@ -70,6 +88,9 @@ class SearchBox extends Component {
           results={this.state.results}
           searchValue={this.state.searchValue}
           addReleaseToTracklist={this.addReleaseToTracklist}
+          getReleaseDetails={this.getReleaseDetails}
+          result={this.state.result}
+          shown={this.state.shown}
         />
       </Segment>
     );
