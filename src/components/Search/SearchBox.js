@@ -51,20 +51,27 @@ class SearchBox extends Component {
     );
   }
 
-  getReleaseDetails(releaseId) {
-    axios
-      .get("https://api.discogs.com/masters/" + releaseId, {
-        params: {
-          token: "OKAFGfTucaaBaUSmmLucyymiHxryMsQjXAhNaDzD"
-        }
-      })
-      .then(result => {
-        this.setState({
-          result,
-          shown: !this.state.shown
+  getReleaseDetails(releaseId, showing) {
+    if (!showing) {
+      axios
+        .get("https://api.discogs.com/masters/" + releaseId, {
+          params: {
+            token: "OKAFGfTucaaBaUSmmLucyymiHxryMsQjXAhNaDzD"
+          }
+        })
+        .then(result => {
+          this.setState({
+            result,
+            shown: true
+          });
+          console.log(result);
         });
-        console.log(result);
+    } else {
+      this.setState({
+        result: null,
+        shown: false
       });
+    }
   }
 
   addReleaseToTracklist(result) {
