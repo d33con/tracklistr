@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Icon } from "semantic-ui-react";
+import { Button, Icon, Input, Popup } from "semantic-ui-react";
 import Dropzone from "react-dropzone";
 
 import ProgressBar from "./ProgressBar";
@@ -122,9 +122,23 @@ class Controls extends Component {
               multiple={false}
               onDrop={this.loadAudio}
             >
-              <Icon name="open folder" />Open
+              <Icon name="open folder" />File
             </Dropzone>
           </Button>
+          <Popup
+            trigger={
+              <Button size="large">
+                <Icon name="world" />
+                URL
+              </Button>
+            }
+            on="click"
+            position="right center"
+          >
+            <Popup.Content>
+              <Input placeholder="Enter URL" focus />
+            </Popup.Content>
+          </Popup>
         </Button.Group>
         <div className="b-add-track">
           <Button
