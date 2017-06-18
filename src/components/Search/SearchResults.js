@@ -62,11 +62,15 @@ class SearchResults extends Component {
                           <List.Header>
                             {track &&
                               id === track.data.id &&
-                              <TrackDetailsDropdown track={track.data} />}
+                              <TrackDetailsDropdown
+                                track={track.data}
+                                label={label}
+                                addReleaseToTracklist={addReleaseToTracklist}
+                              />}
                           </List.Header>
                         </List.List>
                       </List.Content>
-                      <List.Content floated="right">
+                      {/*<List.Content floated="right">
                         <Icon
                           name="plus square outline"
                           size="large"
@@ -74,7 +78,7 @@ class SearchResults extends Component {
                           link
                           onClick={() => addReleaseToTracklist({ result })}
                         />
-                      </List.Content>
+                      </List.Content>*/}
                     </List.Item>
                   );
                 })}
