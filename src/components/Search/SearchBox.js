@@ -20,7 +20,6 @@ class SearchBox extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.getSearchSuggestions = this.getSearchSuggestions.bind(this);
     this.getReleaseDetails = this.getReleaseDetails.bind(this);
-    this.addReleaseToTracklist = this.addReleaseToTracklist.bind(this);
   }
 
   getSearchSuggestions(value) {
@@ -37,7 +36,6 @@ class SearchBox extends Component {
       .then(res => {
         const results = res.data.results.map(obj => obj);
         this.setState({ results });
-        console.log(results);
       });
   }
 
@@ -64,7 +62,6 @@ class SearchBox extends Component {
             result,
             shown: true
           });
-          console.log(result);
         });
     } else {
       this.setState({
@@ -74,15 +71,11 @@ class SearchBox extends Component {
     }
   }
 
-  addReleaseToTracklist(result) {
-    this.props.addReleaseToTracklist(result);
-  }
-
   render() {
     return (
       <Segment padded>
         <Input
-          placeholder="eg. Artist - Title"
+          placeholder="eg. Artist - Title or Catalogue Number"
           size="huge"
           icon="search"
           value={this.state.searchValue}
@@ -94,7 +87,7 @@ class SearchBox extends Component {
         <SearchResults
           results={this.state.results}
           searchValue={this.state.searchValue}
-          addReleaseToTracklist={this.addReleaseToTracklist}
+          addReleaseToTracklist={this.props.addReleaseToTracklist}
           getReleaseDetails={this.getReleaseDetails}
           result={this.state.result}
           shown={this.state.shown}
