@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import convertTimeToString from "../../HelperFunctions/ConvertTimeToString";
-import { Container, Header, Form } from "semantic-ui-react";
+import { Container, Header, Icon, Form } from "semantic-ui-react";
 import TextInput from "../Form/TextInput";
 import TimeInput from "../Form/TimeInput";
 import LabeledInput from "../Form/LabeledInput";
+import "../../style/EditTrack.css";
 
 class EditTrack extends Component {
   constructor(props) {
@@ -16,8 +17,10 @@ class EditTrack extends Component {
       trackUrl: "",
       releaseId: 0
     };
-    this.handleMinutesChange = this.handleMinutesChange.bind(this);
-    this.handleSecondsChange = this.handleSecondsChange.bind(this);
+    this.handleMinutesIncrease = this.handleMinutesIncrease.bind(this);
+    this.handleMinutesDecrease = this.handleMinutesDecrease.bind(this);
+    this.handleSecondsIncrease = this.handleSecondsIncrease.bind(this);
+    this.handleSecondsDecrease = this.handleSecondsDecrease.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleLabelChange = this.handleLabelChange.bind(this);
     this.handleTrackUrlChange = this.handleTrackUrlChange.bind(this);
@@ -41,15 +44,27 @@ class EditTrack extends Component {
     });
   }
 
-  handleMinutesChange(e) {
+  handleMinutesIncrease(e) {
     this.setState(prevState => ({
       trackTime: prevState.trackTime + 60
     }));
   }
 
-  handleSecondsChange(e) {
+  handleMinutesDecrease(e) {
+    this.setState(prevState => ({
+      trackTime: prevState.trackTime - 60
+    }));
+  }
+
+  handleSecondsIncrease(e) {
     this.setState(prevState => ({
       trackTime: prevState.trackTime + 1
+    }));
+  }
+
+  handleSecondsDecrease(e) {
+    this.setState(prevState => ({
+      trackTime: prevState.trackTime - 1
     }));
   }
 
@@ -80,7 +95,8 @@ class EditTrack extends Component {
   render() {
     const { trackTime, trackTitle, trackUrl, trackLabel } = this.state;
     const minutes = Math.floor(trackTime / 60);
-    const seconds = trackTime % 60;
+    let seconds = trackTime % 60;
+    seconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
 
     return (
       <Container>
@@ -88,29 +104,34 @@ class EditTrack extends Component {
           Edit Track at {convertTimeToString(trackTime)}
         </Header>
         <Form size="large" inverted>
-          <Form.Group inline widths="equal">
+          <Form.Group inline>
             <label>Time: </label>
-            <TimeInput
-              label="Mins"
-              value={minutes}
-              name={name}
-              type="number"
-              step="1"
-              min="0"
-              width={1}
-              onChange={this.handleMinutesChange}
-            />
-            <TimeInput
-              label="Secs"
-              value={seconds}
-              name={name}
-              type="number"
-              step="1"
-              min="0"
-              max="59"
-              onChange={this.handleSecondsChange}
-              width={1}
-            />
+            <TimeInput label="Mins" value={minutes} />
+            <div className="editform-timebuttons">
+              <Icon
+                name="plus square outline"
+                size="large"
+                onClick={this.handleMinutesIncrease}
+              />
+              <Icon
+                name="minus square outline"
+                size="large"
+                onClick={this.handleMinutesDecrease}
+              />
+            </div>
+            <TimeInput label="Secs" value={seconds} />
+            <div className="editform-timebuttons">
+              <Icon
+                name="plus square outline"
+                size="large"
+                onClick={this.handleSecondsIncrease}
+              />
+              <Icon
+                name="minus square outline"
+                size="large"
+                onClick={this.handleSecondsDecrease}
+              />
+            </div>
           </Form.Group>
           <TextInput
             label="Title"
