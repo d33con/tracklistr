@@ -24,14 +24,14 @@ class App extends Component {
   }
 
   addReleaseToTracklist(track, trackTime) {
-    const { title, uri, label, id } = track.result;
+    const { trackTitle, trackUrl, trackLabel, releaseId } = track;
     // **CHECK THIS!**
     let nextState = this.state.tracklist.concat({
       trackTime,
-      trackTitle: title,
-      trackUrl: uri,
-      trackLabel: label.length && label[0],
-      releaseId: id
+      trackTitle,
+      trackUrl,
+      trackLabel,
+      releaseId
     });
     this.setState({ tracklist: nextState });
     saveState(nextState);
