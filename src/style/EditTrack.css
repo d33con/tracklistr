@@ -1,0 +1,7 @@
+.editform-timebuttons {
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
+  margin-right: 50px;
+  cursor: pointer;
+}
