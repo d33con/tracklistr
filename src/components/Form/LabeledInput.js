@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { Form, Input } from "semantic-ui-react";
 
 function LabeledInput({ label, innerLabel, value, name, onChange }) {
@@ -22,7 +22,7 @@ LabeledInput.propTypes = {
   innerLabel: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-}
+  onChange: PropTypes.func.isRequired
+};
 
 export default LabeledInput;
