@@ -21,7 +21,6 @@ class TracklistTable extends Component {
     this.deleteTrack = this.deleteTrack.bind(this);
     this.updateTrack = this.updateTrack.bind(this);
     this.updateTracklistTable = this.updateTracklistTable.bind(this);
-    this.closeDimmer = this.closeDimmer.bind(this);
   }
 
   componentDidMount() {
@@ -30,16 +29,6 @@ class TracklistTable extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.updateTracklistTable(nextProps.currentTracklist);
-  }
-
-  updateTracklistTable(newTracklist) {
-    // **CHECK THIS!**
-    const sortedTracklist = newTracklist.sort(
-      (a, b) => (a.trackTime > b.trackTime ? 1 : -1)
-    );
-    this.setState({
-      tracklist: sortedTracklist
-    });
   }
 
   addTableTrack(e) {
@@ -69,20 +58,28 @@ class TracklistTable extends Component {
   }
 
   updateTrack(formPayload) {
-    this.setState({
-      tracklist: [
-        ...this.state.tracklist.filter(
-          tracks => tracks.releaseId !== formPayload.releaseId
-        ),
-        formPayload
-      ]
-    });
-    this.closeDimmer();
-    this.updateTracklistTable(); // **CHECK THIS!**
+    this.setState(
+      {
+        tracklist: [
+          ...this.state.tracklist.filter(
+            tracks => tracks.releaseId !== formPayload.releaseId
+          ),
+          formPayload
+        ]
+      },
+      this.updateTracklistTable(this.state.tracklist)
+    );
   }
 
-  closeDimmer() {
-    this.setState({ showDimmer: false });
+  updateTracklistTable(newTracklist) {
+    // **CHECK THIS!**
+    const sortedTracklist = newTracklist.sort(
+      (a, b) => (a.trackTime > b.trackTime ? 1 : -1)
+    );
+    this.setState({
+      tracklist: sortedTracklist,
+      showDimmer: false
+    });
   }
 
   render() {
@@ -104,6 +101,7 @@ class TracklistTable extends Component {
           <Icon
             name="edit"
             link
+            size="large"
             onClick={() => this.editTrack(track.releaseId)}
           />
         </Table.Cell>
@@ -112,6 +110,7 @@ class TracklistTable extends Component {
             name="delete"
             link
             color="red"
+            size="large"
             onClick={() => this.deleteTrack(track.releaseId)}
           />
         </Table.Cell>
@@ -156,34 +155,40 @@ class TracklistTable extends Component {
           <Table.Footer fullWidth>
             <Table.Row>
               <Table.HeaderCell colSpan="5">
-                <Button floated="right" color="blue" inverted animated>
+                <Button
+                  floated="right"
+                  size="large"
+                  color="blue"
+                  inverted
+                  animated="fade"
+                >
                   <Button.Content hidden>Export</Button.Content>
                   <Button.Content visible>
                     <Icon name="file outline" />
                   </Button.Content>
                 </Button>
-                <Button floated="right" color="blue" inverted animated>
+                <Button
+                  floated="right"
+                  size="large"
+                  color="blue"
+                  inverted
+                  animated="fade"
+                >
                   <Button.Content hidden>Share</Button.Content>
                   <Button.Content visible>
                     <Icon name="share" />
                   </Button.Content>
                 </Button>
                 <Button
-                  size="medium"
+                  size="large"
                   color="blue"
                   inverted
-                  animated
+                  animated="fade"
                   onClick={this.addTableTrack}
                 >
-                  <Button.Content hidden>Add</Button.Content>
+                  <Button.Content hidden>Add Row</Button.Content>
                   <Button.Content visible>
                     <Icon name="add circle" />
-                  </Button.Content>
-                </Button>
-                <Button size="medium" color="blue" inverted animated>
-                  <Button.Content hidden>Save</Button.Content>
-                  <Button.Content visible>
-                    <Icon name="save" />
                   </Button.Content>
                 </Button>
               </Table.HeaderCell>
