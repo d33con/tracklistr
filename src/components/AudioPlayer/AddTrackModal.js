@@ -12,9 +12,7 @@ function AddTrackModal({ shown, onClose, currentTime, addReleaseToTracklist }) {
         Add New Track at {convertTimeToString(currentTime)}
       </Modal.Header>
       <Modal.Content>
-        <SearchBox
-          addReleaseToTracklist={result => addReleaseToTracklist(result)}
-        />
+        <SearchBox addReleaseToTracklist={addReleaseToTracklist} />
       </Modal.Content>
       <Modal.Actions>
         <Button
