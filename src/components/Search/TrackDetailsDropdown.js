@@ -3,53 +3,53 @@ import PropTypes from "prop-types";
 import { Button, List, Icon } from "semantic-ui-react";
 import v4 from "uuid";
 
-function TrackDetailsDropdown(props) {
-  const { tracklist } = props.track;
-  function addReleaseToTracklist(artist, title, label, id) {
+function TrackDetailsDropdown({ addReleaseToTracklist, label, track }) {
+  const { tracklist, uri } = track;
+  function sendReleaseToTracklist(artist, title, label, id, position) {
     const trackTitle = `${artist} - ${title}`;
     console.log(tracklist);
     const track = {
       trackTitle,
-      trackUrl: props.track.uri.slice(23),
+      trackUrl: uri.slice(23),
       trackLabel: label[0],
-      releaseId: id
+      releaseId: `${id}${position}`
     };
 
-    props.addReleaseToTracklist(track);
+    addReleaseToTracklist(track);
   }
   return (
     <div>
 
-      {tracklist.map((track, singleArtist) => {
-        singleArtist = props.track.artists[0].name;
+      {tracklist.map((singleTrack, singleArtist) => {
+        singleArtist = track.artists[0].name;
         const artists = track.artists && track.artists.length > 0
           ? track.artists.map(name => {
-              return name.join !== ","
+              return name.join === ","
                 ? `${name.name} ${name.join} `
                 : `${name.name}`;
             })
           : singleArtist;
         return (
           <List.Item key={v4()}>
-            {track.position}
+            {singleTrack.position}
             .
             {" "}
             {artists}
             {" "}
             -
             {" "}
-            {track.title}
+            {singleTrack.title}
             <Button
               animated="fade"
               size="tiny"
               color="blue"
               onClick={() =>
-                addReleaseToTracklist(
+                sendReleaseToTracklist(
                   artists,
-                  track.title,
-                  props.label,
-                  props.track.id,
-                  track
+                  singleTrack.title,
+                  label,
+                  track.id,
+                  singleTrack.position
                 )}
             >
               <Button.Content hidden>Add</Button.Content>
@@ -65,7 +65,9 @@ function TrackDetailsDropdown(props) {
 }
 
 TrackDetailsDropdown.propTypes = {
-  track: PropTypes.object
+  track: PropTypes.object.isRequired,
+  addReleaseToTracklist: PropTypes.func.isRequired,
+  label: PropTypes.array.isRequired
 };
 
 export default TrackDetailsDropdown;
