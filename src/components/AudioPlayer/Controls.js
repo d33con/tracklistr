@@ -92,7 +92,7 @@ class Controls extends Component {
     return (
       <div className="b-audio-player-controls">
         <audio
-          ref={audio => this.audioSrc = audio}
+          ref={audio => (this.audioSrc = audio)}
           className="audio-player--file"
           src={this.state.audioSrc}
         />
@@ -108,6 +108,7 @@ class Controls extends Component {
                 content="Pause"
                 size="large"
                 onClick={this.toggleAudio}
+                color="red"
               />
             : <Button
                 icon="play"
