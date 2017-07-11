@@ -6,8 +6,8 @@ import testImg from "../../img/test.jpg";
 import "../../style/AudioPlayer.css";
 
 class ImageSelector extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       imgSrc: testImg
     };
