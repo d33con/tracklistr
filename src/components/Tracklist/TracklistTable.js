@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import v4 from "uuid";
 import { Button, Icon, Table, Dimmer } from "semantic-ui-react";
 import convertTimeToString from "../../HelperFunctions/ConvertTimeToString";
+import { saveState } from "../../HelperFunctions/localStorage";
+import * as FileSaver from "file-saver";
 
 import EditTrack from "./EditTrack";
 
@@ -21,6 +23,7 @@ class TracklistTable extends Component {
     this.deleteTrack = this.deleteTrack.bind(this);
     this.updateTrack = this.updateTrack.bind(this);
     this.updateTracklistTable = this.updateTracklistTable.bind(this);
+    this.saveToFile = this.saveToFile.bind(this);
   }
 
   componentDidMount() {
@@ -29,6 +32,10 @@ class TracklistTable extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.updateTracklistTable(nextProps.currentTracklist);
+  }
+
+  componentDidUpdate() {
+    saveState(this.state.tracklist);
   }
 
   addTableTrack(e) {
@@ -82,9 +89,20 @@ class TracklistTable extends Component {
     });
   }
 
+  saveToFile() {
+    const tracklist = this.state.tracklist.map(track => {
+      const timestamp = convertTimeToString(track.trackTime);
+      return `${timestamp} - ${track.trackTitle} - ${track.trackLabel}`;
+    });
+    const blob = new Blob([tracklist.join("\r\n")], {
+      type: "text/plain;charset=utf-8"
+    });
+    FileSaver.saveAs(blob, "File.txt");
+  }
+
   render() {
     const { showDimmer, tracklist } = this.state;
-    const tableRows = tracklist.map(track => (
+    const tableRows = tracklist.map(track =>
       <Table.Row key={track.releaseId}>
         <Table.Cell>
           {convertTimeToString(track.trackTime)}
@@ -115,11 +133,10 @@ class TracklistTable extends Component {
           />
         </Table.Cell>
       </Table.Row>
-    ));
+    );
 
     return (
       <Dimmer.Dimmable dimmed={showDimmer}>
-
         <Dimmer page active={showDimmer} onClickOutside={this.closeDimmer}>
           <EditTrack
             track={this.state.editing}
@@ -130,21 +147,11 @@ class TracklistTable extends Component {
         <Table celled>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>
-                Time
-              </Table.HeaderCell>
-              <Table.HeaderCell>
-                Track Name
-              </Table.HeaderCell>
-              <Table.HeaderCell>
-                Label
-              </Table.HeaderCell>
-              <Table.HeaderCell>
-                Edit
-              </Table.HeaderCell>
-              <Table.HeaderCell>
-                Delete
-              </Table.HeaderCell>
+              <Table.HeaderCell>Time</Table.HeaderCell>
+              <Table.HeaderCell>Track Name</Table.HeaderCell>
+              <Table.HeaderCell>Label</Table.HeaderCell>
+              <Table.HeaderCell>Edit</Table.HeaderCell>
+              <Table.HeaderCell>Delete</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 
@@ -161,13 +168,14 @@ class TracklistTable extends Component {
                   color="blue"
                   inverted
                   animated="fade"
+                  onClick={this.saveToFile}
                 >
                   <Button.Content hidden>Export</Button.Content>
                   <Button.Content visible>
                     <Icon name="file outline" />
                   </Button.Content>
                 </Button>
-                <Button
+                {/*<Button
                   floated="right"
                   size="large"
                   color="blue"
@@ -178,7 +186,7 @@ class TracklistTable extends Component {
                   <Button.Content visible>
                     <Icon name="share" />
                   </Button.Content>
-                </Button>
+                </Button>*/}
                 <Button
                   size="large"
                   color="blue"
@@ -195,7 +203,6 @@ class TracklistTable extends Component {
             </Table.Row>
           </Table.Footer>
         </Table>
-
       </Dimmer.Dimmable>
     );
   }
