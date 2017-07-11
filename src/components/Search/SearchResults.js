@@ -96,8 +96,11 @@ class SearchResults extends Component {
 
 SearchResults.propTypes = {
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
+  result: PropTypes.object,
+  shown: PropTypes.bool.isRequired,
   searchValue: PropTypes.string.isRequired,
-  addReleaseToTracklist: PropTypes.func.isRequired
+  addReleaseToTracklist: PropTypes.func.isRequired,
+  getReleaseDetails: PropTypes.func.isRequired
 };
 
 export default SearchResults;
