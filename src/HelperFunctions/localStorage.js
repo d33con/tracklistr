@@ -8,7 +8,7 @@ export const loadState = () => {
           trackTitle: "Caroline K - Tracking With Close Ups",
           trackUrl: "/Caroline-K-Now-Wait-For-Last-Year/release/10182988",
           trackLabel: "Blackest Ever Black",
-          releaseId: 10182988
+          releaseId: "10182988"
         }
       ];
       localStorage.setItem("state", JSON.stringify(savedState));
