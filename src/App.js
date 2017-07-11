@@ -23,6 +23,10 @@ class App extends Component {
     this.setState({ tracklist: savedState });
   }
 
+  componentDidUpdate() {
+    saveState(this.state.tracklist);
+  }
+
   addReleaseToTracklist(track, trackTime) {
     const { trackTitle, trackUrl, trackLabel, releaseId } = track;
     // **CHECK THIS!**
@@ -34,7 +38,6 @@ class App extends Component {
       releaseId
     });
     this.setState({ tracklist: nextState });
-    saveState(nextState);
   }
 
   render() {
