@@ -15,7 +15,7 @@ class EditTrack extends Component {
       trackTitle: "",
       trackLabel: "",
       trackUrl: "",
-      releaseId: 0
+      releaseId: ""
     };
     this.handleMinutesIncrease = this.handleMinutesIncrease.bind(this);
     this.handleMinutesDecrease = this.handleMinutesDecrease.bind(this);
