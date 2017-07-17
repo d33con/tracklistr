@@ -38,7 +38,9 @@ class SearchResults extends Component {
                       <Image avatar floated="left" src={thumb} />
                       <List.Content floated="left">
                         <List.Header>
-                          <a href={`https://www.discogs.com${uri}`}>{title}</a>
+                          <a href={`https://www.discogs.com${uri}`}>
+                            {title}
+                          </a>
                           {track && id === track.data.id && this.state.shown
                             ? <Icon
                                 name="caret up"
@@ -52,10 +54,7 @@ class SearchResults extends Component {
                               />}
                         </List.Header>
                         <List.Description>
-                          {label && label.length && label[0]}
-                          {" "}
-                          /
-                          {" "}
+                          {label && label.length && label[0]} /{" "}
                           {format.length && format[0]}
                         </List.Description>
                         <List.List>
