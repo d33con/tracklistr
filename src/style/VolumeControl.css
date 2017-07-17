@@ -1,0 +1,41 @@
+.b-volume-bar-background {
+  min-width: 0 !important;
+  position: relative;
+  display: block;
+  max-width: 10%;
+  border: none;
+  box-shadow: none;
+  background: rgba(0, 0, 0, .1);
+  padding: 0;
+  font-size: .92857143rem;
+  border-radius: .28571429rem;
+  margin: 0 0 2.5em;
+}
+
+.b-volume-bar-filled {
+  background-color: #2185d0;
+  display: block;
+  height: 1em;
+  line-height: 1;
+  max-width: 100%;
+  position: relative;
+  border-radius: .28571429rem;
+  transition: width .15s ease, background-color .15s ease;
+}
+
+.b-volume-bar-label {
+  text-align: right !important;
+  position: absolute;
+  width: 100%;
+  font-size: 1em;
+  top: 100%;
+  right: auto;
+  left: 0;
+  bottom: auto;
+  color: rgba(0, 0, 0, .87);
+  font-weight: 700;
+  text-shadow: none;
+  margin-top: .2em;
+  text-align: center;
+  transition: color .4s ease;
+}

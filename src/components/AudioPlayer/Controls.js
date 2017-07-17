@@ -4,6 +4,7 @@ import { Button, Icon, Input, Popup } from "semantic-ui-react";
 import Dropzone from "react-dropzone";
 
 import ProgressBar from "./ProgressBar";
+import VolumeControl from "./VolumeControl";
 import AddTrackModal from "./AddTrackModal";
 import audioSrc from "../../audio/DJ Advance - 93-4 Darkside Mini Mix.mp3";
 
@@ -96,6 +97,7 @@ class Controls extends Component {
           className="audio-player--file"
           src={this.state.audioSrc}
         />
+        <VolumeControl />
         <ProgressBar
           handleClick={this.updateTrackPosition}
           duration={this.state.duration}
