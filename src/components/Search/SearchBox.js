@@ -83,7 +83,9 @@ class SearchBox extends Component {
           focus={true}
           fluid
         />
-        <Divider horizontal className="b-search-divider">Results</Divider>
+        <Divider horizontal className="b-search-divider">
+          Results
+        </Divider>
         <SearchResults
           results={this.state.results}
           searchValue={this.state.searchValue}
