@@ -10,16 +10,17 @@
   font-size: .92857143rem;
   border-radius: .28571429rem;
   margin: 0 0 2.5em;
+  cursor: pointer;
 }
 
 .b-progress-bar {
-  background-color: #2185D0;
+  background-color: #2185d0;
   display: block;
   height: 1em;
   line-height: 1;
   position: relative;
   border-radius: .28571429rem;
-  transition: width .15s ease, background-color .15s ease;
+  transition: width .05s ease-in-out, background-color .05s ease-in-out;
 }
 
 .b-progress-bar-label {
@@ -36,5 +37,4 @@
   text-shadow: none;
   margin-top: .2em;
   text-align: center;
-  transition: color .4s ease;
 }
