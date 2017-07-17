@@ -80,11 +80,11 @@ class TracklistTable extends Component {
 
   updateTracklistTable(newTracklist) {
     // **CHECK THIS!**
-    const sortedTracklist = newTracklist.sort(
+    /*const sortedTracklist = newTracklist.sort(
       (a, b) => (a.trackTime > b.trackTime ? 1 : -1)
-    );
+    );*/
     this.setState({
-      tracklist: sortedTracklist,
+      tracklist: newTracklist.sort((a, b) => a.trackTime > b.trackTime),
       showDimmer: false
     });
   }
@@ -97,7 +97,7 @@ class TracklistTable extends Component {
     const blob = new Blob([tracklist.join("\r\n")], {
       type: "text/plain;charset=utf-8"
     });
-    FileSaver.saveAs(blob, "File.txt");
+    FileSaver.saveAs(blob, "tracklist.txt");
   }
 
   render() {
