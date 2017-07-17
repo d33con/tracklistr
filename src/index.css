@@ -2,4 +2,22 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Rubik', sans-serif;
+  min-height: 100vh;
+  background-image: repeating-linear-gradient(
+      35deg,
+      rgba(232, 145, 130, 0) 0,
+      #40ccde 100%,
+      #40ccde calc(100% - 0px),
+      #40ccde 100%
+    ),
+    repeating-linear-gradient(
+      220deg,
+      rgba(232, 145, 130, 0) 0,
+      #7a9376 100%,
+      #7a9376 calc(100% - 0px),
+      #7a9376 100%
+    );
+
+  background-color: #e89182;
+  background-size: 150% 150%;
 }
