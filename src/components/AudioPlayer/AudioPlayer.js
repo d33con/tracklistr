@@ -6,8 +6,7 @@ import ImageSelector from "./ImageSelector";
 
 import "../../style/AudioPlayer.css";
 
-const mixArtist = "DJ Advance";
-const mixTitle = "Example mix May 2017";
+const mixTitle = "DJ Advance - Example mix July 2017";
 
 function AudioPlayer({ currentTracklist, addReleaseToTracklist }) {
   return (
@@ -16,8 +15,7 @@ function AudioPlayer({ currentTracklist, addReleaseToTracklist }) {
         <Card raised fluid color="blue" className="b-audio-player">
           <Card.Content>
             <ImageSelector />
-            <Card.Header content={mixArtist} />
-            <Card.Content description={mixTitle} />
+            <Card.Header content={mixTitle} />
           </Card.Content>
           <Card.Content extra>
             <Controls
