@@ -11,7 +11,7 @@ function TrackDetailsDropdown({ addReleaseToTracklist, label, track }) {
     const trackTitle = `${artist} - ${title}`;
     const track = {
       trackTitle,
-      trackUrl: uri.slice(23),
+      trackUrl: uri,
       trackLabel: label[0],
       releaseId: `${id}${position}`
     };

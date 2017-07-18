@@ -6,7 +6,8 @@ export const loadState = () => {
         {
           trackTime: 0,
           trackTitle: "Caroline K - Tracking With Close Ups",
-          trackUrl: "/Caroline-K-Now-Wait-For-Last-Year/release/10182988",
+          trackUrl:
+            "https://www.discogs.com/Caroline-K-Now-Wait-For-Last-Year/release/10182988",
           trackLabel: "Blackest Ever Black",
           releaseId: "10182988"
         }

@@ -108,7 +108,7 @@ class TracklistTable extends Component {
           {convertTimeToString(track.trackTime)}
         </Table.Cell>
         <Table.Cell>
-          <a href={`'https://www.discogs.com${track.trackUrl}'`}>
+          <a href={track.trackUrl}>
             {track.trackTitle}
           </a>
         </Table.Cell>

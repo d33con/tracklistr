@@ -4,7 +4,6 @@ import convertTimeToString from "../../HelperFunctions/ConvertTimeToString";
 import { Container, Header, Icon, Form } from "semantic-ui-react";
 import TextInput from "../Form/TextInput";
 import TimeInput from "../Form/TimeInput";
-import LabeledInput from "../Form/LabeledInput";
 import "../../style/EditTrack.css";
 
 class EditTrack extends Component {
@@ -145,9 +144,8 @@ class EditTrack extends Component {
             name="label"
             onChange={this.handleLabelChange}
           />
-          <LabeledInput
+          <TextInput
             label="Track Link"
-            innerLabel="www.discogs.com"
             value={trackUrl}
             name="trackUrl"
             onChange={this.handleTrackUrlChange}
