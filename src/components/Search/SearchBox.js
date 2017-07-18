@@ -20,6 +20,11 @@ class SearchBox extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.getSearchSuggestions = this.getSearchSuggestions.bind(this);
     this.getReleaseDetails = this.getReleaseDetails.bind(this);
+    this.focusSearchInput = this.focusSearchInput.bind(this);
+  }
+
+  componentDidMount() {
+    this.focusSearchInput();
   }
 
   getSearchSuggestions(value) {
@@ -71,6 +76,10 @@ class SearchBox extends Component {
     }
   }
 
+  focusSearchInput() {
+    this.searchInput.focus();
+  }
+
   render() {
     return (
       <Segment padded>
@@ -80,7 +89,9 @@ class SearchBox extends Component {
           icon="search"
           value={this.state.searchValue}
           onChange={this.handleChange}
-          focus={true}
+          ref={input => {
+            this.searchInput = input;
+          }}
           fluid
         />
         <Divider horizontal className="b-search-divider">
