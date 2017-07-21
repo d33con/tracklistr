@@ -1,15 +1,3 @@
 {
-  "parser": "babel-eslint",
-  "extends": "react-app",
-  "plugins": [
-    "react",
-    "jsx-a11y",
-    "import"
-  ],
-  "rules": {
-    "linebreak-style": 0,
-    "react/jsx-filename-extension": [1, {
-      "extensions": [".js", ".jsx"]
-    }]
-  }
+  "extends": "react-app"
 }
