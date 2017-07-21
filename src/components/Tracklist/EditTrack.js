@@ -20,9 +20,7 @@ class EditTrack extends Component {
     this.handleMinutesDecrease = this.handleMinutesDecrease.bind(this);
     this.handleSecondsIncrease = this.handleSecondsIncrease.bind(this);
     this.handleSecondsDecrease = this.handleSecondsDecrease.bind(this);
-    this.handleTitleChange = this.handleTitleChange.bind(this);
-    this.handleLabelChange = this.handleLabelChange.bind(this);
-    this.handleTrackUrlChange = this.handleTrackUrlChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
@@ -67,16 +65,8 @@ class EditTrack extends Component {
     }));
   }
 
-  handleTitleChange(e) {
-    this.setState({ trackTitle: e.target.value });
-  }
-
-  handleLabelChange(e) {
-    this.setState({ trackLabel: e.target.value });
-  }
-
-  handleTrackUrlChange(e) {
-    this.setState({ trackUrl: e.target.value });
+  handleInputChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   handleFormSubmit(e) {
@@ -136,19 +126,19 @@ class EditTrack extends Component {
             label="Title"
             value={trackTitle}
             name="trackTitle"
-            onChange={this.handleTitleChange}
+            onChange={this.handleInputChange}
           />
           <TextInput
             label="Label"
             value={trackLabel}
-            name="label"
-            onChange={this.handleLabelChange}
+            name="trackLabel"
+            onChange={this.handleInputChange}
           />
           <TextInput
             label="Track Link"
             value={trackUrl}
             name="trackUrl"
-            onChange={this.handleTrackUrlChange}
+            onChange={this.handleInputChange}
           />
           <Form.Button
             color="green"
