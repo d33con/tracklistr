@@ -175,18 +175,6 @@ class TracklistTable extends Component {
                     <Icon name="file outline" />
                   </Button.Content>
                 </Button>
-                {/*<Button
-                  floated="right"
-                  size="large"
-                  color="blue"
-                  inverted
-                  animated="fade"
-                >
-                  <Button.Content hidden>Share</Button.Content>
-                  <Button.Content visible>
-                    <Icon name="share" />
-                  </Button.Content>
-                </Button>*/}
                 <Button
                   size="large"
                   color="blue"
