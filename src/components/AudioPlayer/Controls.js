@@ -16,6 +16,7 @@ class Controls extends Component {
     this.state = {
       audioPlaying: false,
       audioSrc,
+      isAudioLoadPopupOpen: false,
       duration: 0,
       currentTime: 0,
       addingTrack: false,
@@ -24,6 +25,10 @@ class Controls extends Component {
     };
     this.toggleAudio = this.toggleAudio.bind(this);
     this.loadAudio = this.loadAudio.bind(this);
+    this.updateAudioSrc = this.updateAudioSrc.bind(this);
+    this.loadAudioFromUrl = this.loadAudioFromUrl.bind(this);
+    this.handlePopup = this.handlePopup.bind(this);
+    this.closePopup = this.closePopup.bind(this);
     this.updateTrackPosition = this.updateTrackPosition.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -41,6 +46,30 @@ class Controls extends Component {
     this.setState({
       audioSrc: file[0].preview
     });
+  }
+
+  handlePopup() {
+    this.setState({
+      isAudioLoadPopupOpen: true
+    });
+  }
+
+  closePopup() {
+    this.setState({
+      isAudioLoadPopupOpen: false
+    });
+  }
+
+  updateAudioSrc(e) {
+    this.setState({ audioSrc: e.target.value });
+  }
+
+  loadAudioFromUrl(e) {
+    e.preventDefault();
+    this.setState({
+      isAudioLoadPopupOpen: false
+    });
+    this.toggleAudio();
   }
 
   toggleAudio() {
@@ -137,9 +166,26 @@ class Controls extends Component {
             }
             on="click"
             position="right center"
+            open={this.state.isAudioLoadPopupOpen}
+            onOpen={this.handlePopup}
+            onClose={this.closePopup}
           >
             <Popup.Content>
-              <Input placeholder="Enter URL" focus />
+              <Input
+                placeholder="Enter URL"
+                autoFocus
+                onChange={this.updateAudioSrc}
+                icon={
+                  <Icon
+                    name="add"
+                    onClick={this.loadAudioFromUrl}
+                    link
+                    circular
+                    inverted
+                    color="teal"
+                  />
+                }
+              />
             </Popup.Content>
           </Popup>
         </Button.Group>
