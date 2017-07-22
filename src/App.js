@@ -44,7 +44,7 @@ class App extends Component {
     return (
       <div className="b-app">
         <div className="b-app-header">
-          <div className="b-app-header--title">Tracklistr</div>
+          <div className="b-app-header--title">Tracklistah</div>
         </div>
         <Container className="b-app-body">
           <AudioPlayer

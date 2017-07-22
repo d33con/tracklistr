@@ -10,12 +10,20 @@ const mixTitle = "DJ Advance - Example mix July 2017";
 
 function AudioPlayer({ currentTracklist, addReleaseToTracklist }) {
   return (
-    <Grid centered columns={2} padded="vertically">
+    <Grid
+      centered
+      columns={2}
+      padded="vertically"
+      className="b-audio-player-container"
+    >
       <Grid.Column>
         <Card raised fluid color="blue" className="b-audio-player">
           <Card.Content>
             <ImageSelector />
-            <Card.Header content={mixTitle} />
+            <Card.Header
+              content={mixTitle}
+              className="b-audio-player-mix-title"
+            />
           </Card.Content>
           <Card.Content extra>
             <Controls
