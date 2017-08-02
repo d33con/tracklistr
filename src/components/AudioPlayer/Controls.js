@@ -27,6 +27,7 @@ class Controls extends Component {
     this.loadAudio = this.loadAudio.bind(this);
     this.updateAudioSrc = this.updateAudioSrc.bind(this);
     this.loadAudioFromUrl = this.loadAudioFromUrl.bind(this);
+    this.setVolume = this.setVolume.bind(this);
     this.handlePopup = this.handlePopup.bind(this);
     this.closePopup = this.closePopup.bind(this);
     this.updateTrackPosition = this.updateTrackPosition.bind(this);
@@ -114,6 +115,13 @@ class Controls extends Component {
     this.closeModal();
   }
 
+  setVolume(volume) {
+    console.log(volume / 100);
+    if (volume / 100 < 1) {
+      this.audioSrc.volume = volume / 100;
+    }
+  }
+
   render() {
     const dropzoneStyle = {
       style: "none"
@@ -126,7 +134,7 @@ class Controls extends Component {
           className="audio-player--file"
           src={this.state.audioSrc}
         />
-        <VolumeControl />
+        <VolumeControl setVolume={this.setVolume} />
         <ProgressBar
           handleClick={this.updateTrackPosition}
           duration={this.state.duration}
@@ -139,13 +147,14 @@ class Controls extends Component {
                 content="Pause"
                 size="large"
                 onClick={this.toggleAudio}
-                color="red"
+                color="yellow"
               />
             : <Button
                 icon="play"
                 content="Play"
                 size="large"
                 onClick={this.toggleAudio}
+                color="blue"
               />}
           <Button size="large">
             <Dropzone
