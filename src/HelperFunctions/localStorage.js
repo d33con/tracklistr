@@ -2,16 +2,19 @@ export const loadState = () => {
   try {
     let savedState = localStorage.getItem("state");
     if (savedState === null) {
-      savedState = [
-        {
-          trackTime: 0,
-          trackTitle: "Caroline K - Tracking With Close Ups",
-          trackUrl:
-            "https://www.discogs.com/Caroline-K-Now-Wait-For-Last-Year/release/10182988",
-          trackLabel: "Blackest Ever Black",
-          releaseId: "10182988"
-        }
-      ];
+      savedState = {
+        mixTitle: "DJ Advance Mix August '17",
+        tracklist: [
+          {
+            trackTime: 0,
+            trackTitle: "Caroline K - Tracking With Close Ups",
+            trackUrl:
+              "https://www.discogs.com/Caroline-K-Now-Wait-For-Last-Year/release/10182988",
+            trackLabel: "Blackest Ever Black",
+            releaseId: "10182988"
+          }
+        ]
+      };
       localStorage.setItem("state", JSON.stringify(savedState));
     }
     return JSON.parse(localStorage.getItem("state"));
