@@ -28,7 +28,7 @@ class Controls extends Component {
     this.updateAudioSrc = this.updateAudioSrc.bind(this);
     this.loadAudioFromUrl = this.loadAudioFromUrl.bind(this);
     this.setVolume = this.setVolume.bind(this);
-    this.handlePopup = this.handlePopup.bind(this);
+    this.openPopup = this.openPopup.bind(this);
     this.closePopup = this.closePopup.bind(this);
     this.updateTrackPosition = this.updateTrackPosition.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -49,13 +49,15 @@ class Controls extends Component {
     });
   }
 
-  handlePopup() {
+  openPopup(e) {
+    e.preventDefault();
     this.setState({
       isAudioLoadPopupOpen: true
     });
   }
 
-  closePopup() {
+  closePopup(e) {
+    e.preventDefault();
     this.setState({
       isAudioLoadPopupOpen: false
     });
@@ -176,7 +178,7 @@ class Controls extends Component {
             on="click"
             position="right center"
             open={this.state.isAudioLoadPopupOpen}
-            onOpen={this.handlePopup}
+            onOpen={this.openPopup}
             onClose={this.closePopup}
           >
             <Popup.Content>
