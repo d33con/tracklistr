@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import v4 from "uuid";
 import { Button, Icon, Table, Dimmer } from "semantic-ui-react";
 import convertTimeToString from "../../HelperFunctions/ConvertTimeToString";
-import { saveState } from "../../HelperFunctions/localStorage";
 import * as FileSaver from "file-saver";
 
 import EditTrack from "./EditTrack";
@@ -26,29 +24,29 @@ class TracklistTable extends Component {
     this.saveToFile = this.saveToFile.bind(this);
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     this.updateTracklistTable(this.props.currentTracklist);
-  }
+
+    this.setState({
+      tracklist: this.props.currentTracklist
+    });
+  }*/
 
   componentWillReceiveProps(nextProps) {
-    this.updateTracklistTable(nextProps.currentTracklist);
-  }
-
-  componentDidUpdate() {
-    saveState(this.state.tracklist);
+    //this.updateTracklistTable(nextProps.currentTracklist);
+    this.props.currentTracklist !== nextProps.currentTracklist
+      ? this.setState({
+          tracklist: nextProps.currentTracklist
+        })
+      : this.setState({
+          tracklist: this.props.currentTracklist
+        });
+    console.log("cwrp");
   }
 
   addTableTrack(e) {
     e.preventDefault();
-    this.setState(prevState => ({
-      tracklist: prevState.tracklist.concat({
-        trackTime: 0,
-        trackTitle: "",
-        trackUrl: "",
-        trackLabel: "",
-        releaseId: v4()
-      })
-    }));
+    this.props.addEmptyTrack();
   }
 
   editTrack(id) {
@@ -59,34 +57,36 @@ class TracklistTable extends Component {
   }
 
   deleteTrack(id) {
-    this.setState({
-      tracklist: this.state.tracklist.filter(track => track.releaseId !== id)
-    });
+    this.props.deleteTrack(id);
   }
 
   updateTrack(formPayload) {
-    this.setState(
-      {
+    console.log(formPayload);
+    this.setState((prevState, props) => {
+      return {
         tracklist: [
-          ...this.state.tracklist.filter(
+          ...prevState.tracklist.filter(
             tracks => tracks.releaseId !== formPayload.releaseId
           ),
           formPayload
         ]
-      },
-      this.updateTracklistTable(this.state.tracklist)
-    );
+      };
+    });
+    console.log(this.state.tracklist);
+    this.updateTracklistTable(this.state.tracklist);
   }
 
   updateTracklistTable(newTracklist) {
+    console.log(newTracklist);
     // **CHECK THIS!**
     /*const sortedTracklist = newTracklist.sort(
       (a, b) => (a.trackTime > b.trackTime ? 1 : -1)
     );*/
     this.setState({
-      tracklist: newTracklist.sort((a, b) => a.trackTime > b.trackTime),
+      //tracklist: newTracklist.sort((a, b) => a.trackTime > b.trackTime),
       showDimmer: false
     });
+    this.props.editTrack(newTracklist);
   }
 
   saveToFile() {
