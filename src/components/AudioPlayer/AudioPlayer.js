@@ -3,12 +3,16 @@ import PropTypes from "prop-types";
 import { Card, Grid } from "semantic-ui-react";
 import Controls from "./Controls";
 import ImageSelector from "./ImageSelector";
+import MixTitle from "./MixTitle";
 
 import "../../style/AudioPlayer.css";
 
-const mixTitle = "DJ Advance - Example mix July 2017";
-
-function AudioPlayer({ currentTracklist, addReleaseToTracklist }) {
+function AudioPlayer({
+  mixTitle,
+  saveMixTitle,
+  currentTracklist,
+  addReleaseToTracklist
+}) {
   return (
     <Grid
       centered
@@ -21,7 +25,9 @@ function AudioPlayer({ currentTracklist, addReleaseToTracklist }) {
           <Card.Content>
             <ImageSelector />
             <Card.Header
-              content={mixTitle}
+              content={
+                <MixTitle title={mixTitle} saveNewTitle={saveMixTitle} />
+              }
               className="b-audio-player-mix-title"
             />
           </Card.Content>
@@ -38,6 +44,7 @@ function AudioPlayer({ currentTracklist, addReleaseToTracklist }) {
 }
 
 AudioPlayer.propTypes = {
+  mixTitle: PropTypes.string,
   currentTracklist: PropTypes.arrayOf(PropTypes.object).isRequired,
   addReleaseToTracklist: PropTypes.func.isRequired
 };
