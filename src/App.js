@@ -26,7 +26,6 @@ class App extends Component {
 
   componentDidMount() {
     const savedState = loadState();
-    console.log(savedState);
     this.setState({
       mixTitle: savedState.mixTitle,
       tracklist: savedState.tracklist
@@ -47,7 +46,9 @@ class App extends Component {
       trackLabel,
       releaseId
     });
-    this.setState({ tracklist: nextState });
+    this.setState({
+      tracklist: nextState.sort((a, b) => a.trackTime - b.trackTime)
+    });
   }
 
   saveMixTitle(title) {
@@ -72,10 +73,17 @@ class App extends Component {
     });
   }
 
+  // CHECK
   editTrack(newTracklist) {
-    console.log("new state" + newTracklist);
-    this.setState({
-      tracklist: newTracklist.sort((a, b) => a.trackTime > b.trackTime)
+    this.setState((prevState, props) => {
+      return {
+        tracklist: [
+          ...prevState.tracklist.filter(
+            tracks => tracks.releaseId !== newTracklist.releaseId
+          ),
+          newTracklist
+        ].sort((a, b) => a.trackTime - b.trackTime)
+      };
     });
   }
 
@@ -93,7 +101,7 @@ class App extends Component {
             addReleaseToTracklist={this.addReleaseToTracklist}
           />
           <TracklistTable
-            currentTracklist={this.state.tracklist}
+            tracklist={this.state.tracklist}
             addEmptyTrack={this.addEmptyTrack}
             deleteTrack={this.deleteTrack}
             editTrack={this.editTrack}

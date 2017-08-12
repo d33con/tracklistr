@@ -20,28 +20,26 @@ class TracklistTable extends Component {
     this.editTrack = this.editTrack.bind(this);
     this.deleteTrack = this.deleteTrack.bind(this);
     this.updateTrack = this.updateTrack.bind(this);
-    this.updateTracklistTable = this.updateTracklistTable.bind(this);
     this.saveToFile = this.saveToFile.bind(this);
   }
 
-  /*componentDidMount() {
-    this.updateTracklistTable(this.props.currentTracklist);
+  componentDidMount() {
+    //this.updateTracklistTable(this.props.tracklist);
 
     this.setState({
-      tracklist: this.props.currentTracklist
+      tracklist: this.props.tracklist
     });
-  }*/
+  }
 
   componentWillReceiveProps(nextProps) {
-    //this.updateTracklistTable(nextProps.currentTracklist);
-    this.props.currentTracklist !== nextProps.currentTracklist
+    //this.updateTracklistTable(nextProps.tracklist);
+    this.state.tracklist !== nextProps.tracklist
       ? this.setState({
-          tracklist: nextProps.currentTracklist
+          tracklist: nextProps.tracklist
         })
       : this.setState({
-          tracklist: this.props.currentTracklist
+          tracklist: this.props.tracklist
         });
-    console.log("cwrp");
   }
 
   addTableTrack(e) {
@@ -61,34 +59,13 @@ class TracklistTable extends Component {
   }
 
   updateTrack(formPayload) {
-    console.log(formPayload);
-    this.setState((prevState, props) => {
-      return {
-        tracklist: [
-          ...prevState.tracklist.filter(
-            tracks => tracks.releaseId !== formPayload.releaseId
-          ),
-          formPayload
-        ]
-      };
-    });
-    console.log(this.state.tracklist);
-    this.updateTracklistTable(this.state.tracklist);
-  }
-
-  updateTracklistTable(newTracklist) {
-    console.log(newTracklist);
-    // **CHECK THIS!**
-    /*const sortedTracklist = newTracklist.sort(
-      (a, b) => (a.trackTime > b.trackTime ? 1 : -1)
-    );*/
     this.setState({
-      //tracklist: newTracklist.sort((a, b) => a.trackTime > b.trackTime),
       showDimmer: false
     });
-    this.props.editTrack(newTracklist);
+    this.props.editTrack(formPayload);
   }
 
+  // check
   saveToFile() {
     const tracklist = this.state.tracklist.map(track => {
       const timestamp = convertTimeToString(track.trackTime);
@@ -101,7 +78,8 @@ class TracklistTable extends Component {
   }
 
   render() {
-    const { showDimmer, tracklist } = this.state;
+    const { showDimmer } = this.state;
+    const { tracklist } = this.props;
     const tableRows = tracklist.map(track =>
       <Table.Row key={track.releaseId}>
         <Table.Cell>
@@ -197,7 +175,7 @@ class TracklistTable extends Component {
 }
 
 TracklistTable.propTypes = {
-  currentTracklist: PropTypes.arrayOf(PropTypes.object).isRequired
+  tracklist: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default TracklistTable;
