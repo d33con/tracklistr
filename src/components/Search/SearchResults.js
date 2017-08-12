@@ -26,10 +26,6 @@ class SearchResults extends Component {
           if (searchValue.length > 3) {
             return (
               <List divided>
-                {result &&
-                  <List.Description>
-                    {result.data.title}
-                  </List.Description>}
                 {results.map((trackDetail, track) => {
                   const { label, id, thumb, uri, title, format } = trackDetail;
                   track = result;
