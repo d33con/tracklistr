@@ -206,7 +206,7 @@ class Controls extends Component {
             color="green"
             size="large"
             inverted
-            content="Add track at current timestamp"
+            content="Add track using Discogs at current time"
             onClick={this.openModal}
           />
           <AddTrackModal
