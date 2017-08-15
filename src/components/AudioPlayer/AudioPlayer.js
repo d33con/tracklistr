@@ -45,6 +45,7 @@ function AudioPlayer({
 
 AudioPlayer.propTypes = {
   mixTitle: PropTypes.string,
+  saveMixTitle: PropTypes.func.isRequired,
   currentTracklist: PropTypes.arrayOf(PropTypes.object).isRequired,
   addReleaseToTracklist: PropTypes.func.isRequired
 };
