@@ -74,7 +74,7 @@ class TracklistTable extends Component {
     const blob = new Blob([tracklist.join("\r\n")], {
       type: "text/plain;charset=utf-8"
     });
-    FileSaver.saveAs(blob, "tracklist.txt");
+    FileSaver.saveAs(blob, `${this.props.mixTitle}.txt`);
   }
 
   render() {
