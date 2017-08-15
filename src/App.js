@@ -38,17 +38,18 @@ class App extends Component {
 
   addReleaseToTracklist(track, trackTime) {
     const { trackTitle, trackUrl, trackLabel, releaseId } = track;
-    // **CHECK THIS!**
-    let nextState = this.state.tracklist.concat({
-      trackTime,
-      trackTitle,
-      trackUrl,
-      trackLabel,
-      releaseId
-    });
-    this.setState({
-      tracklist: nextState.sort((a, b) => a.trackTime - b.trackTime)
-    });
+    this.setState(
+      prevState => ({
+        tracklist: prevState.tracklist.concat({
+          trackTime,
+          trackTitle,
+          trackUrl,
+          trackLabel,
+          releaseId
+        })
+      }),
+      () => this.sortTracklist(this.state.tracklist)
+    );
   }
 
   saveMixTitle(title) {
@@ -73,17 +74,24 @@ class App extends Component {
     });
   }
 
-  // CHECK
   editTrack(newTracklist) {
-    this.setState((prevState, props) => {
-      return {
+    this.setState(
+      prevState => ({
         tracklist: [
           ...prevState.tracklist.filter(
             tracks => tracks.releaseId !== newTracklist.releaseId
           ),
           newTracklist
-        ].sort((a, b) => a.trackTime - b.trackTime)
-      };
+        ]
+      }),
+      () => this.sortTracklist(this.state.tracklist)
+    );
+  }
+
+  sortTracklist(tracklist) {
+    const sortedTracklist = tracklist.sort((a, b) => a.trackTime - b.trackTime);
+    this.setState({
+      tracklist: sortedTracklist
     });
   }
 
