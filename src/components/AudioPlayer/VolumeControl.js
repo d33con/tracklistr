@@ -9,7 +9,8 @@ class VolumeControl extends Component {
     this.state = {
       isMouseDown: false,
       isMouseInsideBar: false,
-      volume: 100
+      volume: 100,
+      isMuted: false
     };
 
     this.setVolume = this.setVolume.bind(this);
@@ -20,19 +21,21 @@ class VolumeControl extends Component {
   }
 
   muteVolume() {
-    if (this.state.volume === 100) {
+    if (!this.state.isMuted) {
       return this.setState(
         {
-          volume: 0
+          volume: 0,
+          isMuted: true
         },
-        this.props.setVolume(this.state.volume)
+        () => this.props.setVolume(this.state.volume)
       );
     }
     return this.setState(
       {
-        volume: 100
+        volume: this.state.volume,
+        isMuted: false
       },
-      this.props.setVolume(this.state.volume)
+      () => this.props.setVolume(this.state.volume)
     );
   }
 
@@ -67,20 +70,20 @@ class VolumeControl extends Component {
         {
           volume: clickPercent
         },
-        this.props.setVolume(clickPercent)
+        () => this.props.setVolume(clickPercent)
       );
   }
 
   render() {
-    const percentCompleted = this.state.volume;
+    const barWidth = this.state.volume;
     const barStyle = {
-      width: `${percentCompleted}%`
+      width: `${barWidth}%`
     };
 
     return (
       <div className="b-volume-bar-container">
         <div className="b-volume-bar-icon">
-          {this.state.volume === 0
+          {barWidth === 0
             ? <Icon.Group onClick={this.muteVolume} color="grey" size="large">
                 <Icon name="volume off" />
                 <Icon corner name="cancel" color="red" />
@@ -99,14 +102,15 @@ class VolumeControl extends Component {
           onMouseUp={this.onMouseUp}
           ref={volumeBar => (this.volumeBar = volumeBar)}
         >
-          <div className="b-volume-bar-filled" style={barStyle}>
-            <div
+          <span className="b-volume-bar-filled" style={barStyle}>
+            <span
               className="b-volume-bar-knob"
               onMouseMove={this.setVolume}
               onMouseDown={this.onMouseDown}
               onMouseUp={this.onMouseUp}
+              style={{ left: `${barWidth}%` }}
             />
-          </div>
+          </span>
         </div>
       </div>
     );
