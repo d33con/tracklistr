@@ -7,7 +7,7 @@ class SearchResults extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      shown: this.props.shown
+      shown: props.shown
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -23,7 +23,7 @@ class SearchResults extends Component {
     return (
       <div>
         {(() => {
-          if (searchValue.length > 3) {
+          if (searchValue.length > 3 && results.length !== 0) {
             return (
               <List divided>
                 {results.map((trackDetail, track) => {
@@ -65,21 +65,12 @@ class SearchResults extends Component {
                           </List.Header>
                         </List.List>
                       </List.Content>
-                      {/*<List.Content floated="right">
-                        <Icon
-                          name="plus square outline"
-                          size="large"
-                          color="blue"
-                          link
-                          onClick={() => addReleaseToTracklist({ result })}
-                        />
-                      </List.Content>*/}
                     </List.Item>
                   );
                 })}
               </List>
             );
-          } else if (searchValue.length > 0 && searchValue.length <= 3) {
+          } else if (searchValue && results.length === 0) {
             return <h3>No Results</h3>;
           }
           return <h3>Enter a search term</h3>;
