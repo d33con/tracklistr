@@ -24,15 +24,12 @@ class TracklistTable extends Component {
   }
 
   componentDidMount() {
-    //this.updateTracklistTable(this.props.tracklist);
-
     this.setState({
       tracklist: this.props.tracklist
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    //this.updateTracklistTable(nextProps.tracklist);
     this.state.tracklist !== nextProps.tracklist
       ? this.setState({
           tracklist: nextProps.tracklist
@@ -78,7 +75,7 @@ class TracklistTable extends Component {
   }
 
   render() {
-    const { showDimmer } = this.state;
+    const { showDimmer, editing } = this.state;
     const { tracklist } = this.props;
     const tableRows = tracklist.map(track =>
       <Table.Row key={track.releaseId}>
@@ -116,10 +113,7 @@ class TracklistTable extends Component {
     return (
       <Dimmer.Dimmable dimmed={showDimmer}>
         <Dimmer page active={showDimmer} onClickOutside={this.closeDimmer}>
-          <EditTrack
-            track={this.state.editing}
-            updateTrack={this.updateTrack}
-          />
+          <EditTrack track={editing} updateTrack={this.updateTrack} />
         </Dimmer>
 
         <Table celled>
@@ -175,7 +169,10 @@ class TracklistTable extends Component {
 }
 
 TracklistTable.propTypes = {
-  tracklist: PropTypes.arrayOf(PropTypes.object).isRequired
+  tracklist: PropTypes.arrayOf(PropTypes.object).isRequired,
+  addEmptyTrack: PropTypes.func.isRequired,
+  deleteTrack: PropTypes.func.isRequired,
+  editTrack: PropTypes.func.isRequired
 };
 
 export default TracklistTable;
