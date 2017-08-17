@@ -22,6 +22,7 @@ class App extends Component {
     this.addEmptyTrack = this.addEmptyTrack.bind(this);
     this.deleteTrack = this.deleteTrack.bind(this);
     this.editTrack = this.editTrack.bind(this);
+    this.initialiseTracklist = this.initialiseTracklist.bind(this);
   }
 
   componentDidMount() {
@@ -95,6 +96,21 @@ class App extends Component {
     });
   }
 
+  initialiseTracklist() {
+    this.setState({
+      tracklist: [
+        {
+          trackTime: 0,
+          trackTitle: "",
+          trackUrl: "",
+          trackLabel: "",
+          releaseId: v4()
+        }
+      ]
+    });
+    console.log("init");
+  }
+
   render() {
     return (
       <div className="b-app">
@@ -107,6 +123,7 @@ class App extends Component {
             mixTitle={this.state.mixTitle}
             currentTracklist={this.state.tracklist}
             addReleaseToTracklist={this.addReleaseToTracklist}
+            initialiseTracklist={this.initialiseTracklist}
           />
           <TracklistTable
             tracklist={this.state.tracklist}
