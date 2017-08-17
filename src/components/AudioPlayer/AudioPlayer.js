@@ -11,7 +11,8 @@ function AudioPlayer({
   mixTitle,
   saveMixTitle,
   currentTracklist,
-  addReleaseToTracklist
+  addReleaseToTracklist,
+  initialiseTracklist
 }) {
   return (
     <Grid
@@ -35,6 +36,7 @@ function AudioPlayer({
             <Controls
               currentTracklist={currentTracklist}
               addReleaseToTracklist={addReleaseToTracklist}
+              initialiseTracklist={initialiseTracklist}
             />
           </Card.Content>
         </Card>
@@ -47,7 +49,8 @@ AudioPlayer.propTypes = {
   mixTitle: PropTypes.string,
   saveMixTitle: PropTypes.func.isRequired,
   currentTracklist: PropTypes.arrayOf(PropTypes.object).isRequired,
-  addReleaseToTracklist: PropTypes.func.isRequired
+  addReleaseToTracklist: PropTypes.func.isRequired,
+  initialiseTracklist: PropTypes.func.isRequired
 };
 
 export default AudioPlayer;
