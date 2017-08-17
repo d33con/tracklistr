@@ -12,7 +12,8 @@ function TimeInput({ label, value }) {
 
 TimeInput.propTypes = {
   label: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  onChange: PropTypes.func
 };
 
 export default TimeInput;
