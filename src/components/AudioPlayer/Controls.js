@@ -44,9 +44,8 @@ class Controls extends Component {
   }
 
   loadAudio(file) {
-    this.setState({
-      audioSrc: file[0].preview
-    });
+    this.setState({ audioSrc: file[0].preview }, () => this.toggleAudio());
+    this.props.initialiseTracklist();
   }
 
   openPopup(e) {
@@ -73,6 +72,7 @@ class Controls extends Component {
       isAudioLoadPopupOpen: false
     });
     this.toggleAudio();
+    this.props.initialiseTracklist();
   }
 
   toggleAudio() {
@@ -129,21 +129,31 @@ class Controls extends Component {
       style: "none"
     };
 
+    const {
+      audioSrc,
+      duration,
+      currentTime,
+      audioPlaying,
+      isAudioLoadPopupOpen,
+      addingTrack,
+      addingTrackAtTime
+    } = this.state;
+
     return (
       <div className="b-audio-player-controls">
         <audio
           ref={audio => (this.audioSrc = audio)}
           className="audio-player--file"
-          src={this.state.audioSrc}
+          src={audioSrc}
         />
         <VolumeControl setVolume={this.setVolume} />
         <ProgressBar
           handleClick={this.updateTrackPosition}
-          duration={this.state.duration}
-          currentTime={this.state.currentTime}
+          duration={duration}
+          currentTime={currentTime}
         />
         <Button.Group labeled>
-          {this.state.audioPlaying
+          {audioPlaying
             ? <Button
                 icon="pause"
                 content="Pause"
@@ -177,7 +187,7 @@ class Controls extends Component {
             }
             on="click"
             position="right center"
-            open={this.state.isAudioLoadPopupOpen}
+            open={isAudioLoadPopupOpen}
             onOpen={this.openPopup}
             onClose={this.closePopup}
           >
@@ -210,9 +220,9 @@ class Controls extends Component {
             onClick={this.openModal}
           />
           <AddTrackModal
-            shown={this.state.addingTrack}
+            shown={addingTrack}
             onClose={this.closeModal}
-            currentTime={this.state.addingTrackAtTime}
+            currentTime={addingTrackAtTime}
             addReleaseToTracklist={this.addReleaseToTracklist}
           />
         </div>
@@ -223,7 +233,8 @@ class Controls extends Component {
 
 Controls.propTypes = {
   currentTracklist: PropTypes.arrayOf(PropTypes.object).isRequired,
-  addReleaseToTracklist: PropTypes.func.isRequired
+  addReleaseToTracklist: PropTypes.func.isRequired,
+  initialiseTracklist: PropTypes.func.isRequired
 };
 
 export default Controls;
