@@ -72,13 +72,15 @@ class SearchBox extends Component {
   }
 
   render() {
+    const { searchValue, results, result, shown } = this.state;
+    const { addReleaseToTracklist } = this.props;
     return (
       <Segment padded>
         <Input
           placeholder="eg. Artist - Title or Catalogue Number"
           size="huge"
           icon="search"
-          value={this.state.searchValue}
+          value={searchValue}
           onChange={this.handleChange}
           fluid
           autoFocus
@@ -87,12 +89,12 @@ class SearchBox extends Component {
           Results
         </Divider>
         <SearchResults
-          results={this.state.results}
-          searchValue={this.state.searchValue}
-          addReleaseToTracklist={this.props.addReleaseToTracklist}
+          results={results}
+          searchValue={searchValue}
+          addReleaseToTracklist={addReleaseToTracklist}
           getReleaseDetails={this.getReleaseDetails}
-          result={this.state.result}
-          shown={this.state.shown}
+          result={result}
+          shown={shown}
         />
       </Segment>
     );
