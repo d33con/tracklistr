@@ -44,15 +44,17 @@ class MixTitle extends Component {
   }
 
   render() {
+    const { title } = this.props;
+    const { isInputBoxShowing } = this.state;
     return (
       <div>
-        {this.props.title}
+        {title}
         <div>
           <Popup
-            trigger={<Icon link name="edit" />}
+            trigger={<Icon link name="edit" size="small" />}
             on="click"
             position="bottom center"
-            open={this.state.isInputBoxShowing}
+            open={isInputBoxShowing}
             onOpen={this.openPopup}
             onClose={this.closePopup}
           >
@@ -60,6 +62,7 @@ class MixTitle extends Component {
               <Input
                 placeholder="Enter title"
                 autoFocus
+                size="large"
                 onChange={this.updateTitle}
                 icon={
                   <Icon
