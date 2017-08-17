@@ -13,11 +13,11 @@ body {
     repeating-linear-gradient(
       220deg,
       rgba(232, 145, 130, 0) 0,
-      #7a9376 100%,
-      #7a9376 calc(100% - 0px),
-      #7a9376 100%
+      #899587 100%,
+      #899587 calc(100% - 0px),
+      #899587 100%
     );
 
   background-color: #e89182;
-  background-size: 150% 150%;
+  background-size: 500% 500%;
 }
