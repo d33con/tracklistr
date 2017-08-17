@@ -20,6 +20,8 @@ class EditTrack extends Component {
     this.handleMinutesDecrease = this.handleMinutesDecrease.bind(this);
     this.handleSecondsIncrease = this.handleSecondsIncrease.bind(this);
     this.handleSecondsDecrease = this.handleSecondsDecrease.bind(this);
+    this.handleMinsChange = this.handleMinsChange.bind(this);
+    this.handleSecondsChange = this.handleSecondsChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
@@ -155,7 +157,7 @@ class EditTrack extends Component {
 
 EditTrack.propTypes = {
   track: PropTypes.object.isRequired,
-  updateTrack: PropTypes.func
+  updateTrack: PropTypes.func.isRequired
 };
 
 export default EditTrack;
