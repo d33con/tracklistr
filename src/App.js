@@ -118,19 +118,23 @@ class App extends Component {
           <div className="b-app-header--title">Tracklistah</div>
         </div>
         <Container className="b-app-body">
-          <AudioPlayer
-            saveMixTitle={this.saveMixTitle}
-            mixTitle={this.state.mixTitle}
-            currentTracklist={this.state.tracklist}
-            addReleaseToTracklist={this.addReleaseToTracklist}
-            initialiseTracklist={this.initialiseTracklist}
-          />
-          <TracklistTable
-            tracklist={this.state.tracklist}
-            addEmptyTrack={this.addEmptyTrack}
-            deleteTrack={this.deleteTrack}
-            editTrack={this.editTrack}
-          />
+          <div className="b-app-body-player">
+            <AudioPlayer
+              saveMixTitle={this.saveMixTitle}
+              mixTitle={this.state.mixTitle}
+              currentTracklist={this.state.tracklist}
+              addReleaseToTracklist={this.addReleaseToTracklist}
+              initialiseTracklist={this.initialiseTracklist}
+            />
+          </div>
+          <div className="b-app-body-table">
+            <TracklistTable
+              tracklist={this.state.tracklist}
+              addEmptyTrack={this.addEmptyTrack}
+              deleteTrack={this.deleteTrack}
+              editTrack={this.editTrack}
+            />
+          </div>
         </Container>
       </div>
     );

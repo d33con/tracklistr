@@ -6,16 +6,25 @@
 .b-app-header {
   height: 10vh;
   font-family: 'Cairo', sans-serif;
-  padding: 2.5rem;
+  padding: 3rem;
   color: #0d454d;
 }
 
 .b-app-header--title {
-  font-size: 4rem;
+  font-size: 5rem;
   letter-spacing: 5px;
   text-transform: uppercase;
 }
 
 .b-app-body {
-  margin: 2.5rem 0;
+  margin: 3rem 0 !important;
+  display: flex !important;
+}
+
+.b-app-body-player {
+  padding: 1rem 4rem;
+}
+
+.b-app-body-table {
+  padding: 1rem 4rem;
 }

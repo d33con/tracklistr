@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Card, Grid } from "semantic-ui-react";
+import { Card } from "semantic-ui-react";
 import Controls from "./Controls";
 import ImageSelector from "./ImageSelector";
 import MixTitle from "./MixTitle";
@@ -15,33 +15,24 @@ function AudioPlayer({
   initialiseTracklist
 }) {
   return (
-    <Grid
-      centered
-      columns={2}
-      padded="vertically"
-      className="b-audio-player-container"
-    >
-      <Grid.Column>
-        <Card raised fluid color="blue" className="b-audio-player">
-          <Card.Content>
-            <ImageSelector />
-            <Card.Header
-              content={
-                <MixTitle title={mixTitle} saveNewTitle={saveMixTitle} />
-              }
-              className="b-audio-player-mix-title"
-            />
-          </Card.Content>
-          <Card.Content extra>
-            <Controls
-              currentTracklist={currentTracklist}
-              addReleaseToTracklist={addReleaseToTracklist}
-              initialiseTracklist={initialiseTracklist}
-            />
-          </Card.Content>
-        </Card>
-      </Grid.Column>
-    </Grid>
+    <div className="b-audio-player-container">
+      <Card raised fluid color="blue" className="b-audio-player">
+        <Card.Content>
+          <ImageSelector />
+          <Card.Header
+            content={<MixTitle title={mixTitle} saveNewTitle={saveMixTitle} />}
+            className="b-audio-player-mix-title"
+          />
+        </Card.Content>
+        <Card.Content extra>
+          <Controls
+            currentTracklist={currentTracklist}
+            addReleaseToTracklist={addReleaseToTracklist}
+            initialiseTracklist={initialiseTracklist}
+          />
+        </Card.Content>
+      </Card>
+    </div>
   );
 }
 
