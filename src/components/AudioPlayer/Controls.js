@@ -16,6 +16,7 @@ class Controls extends Component {
     this.state = {
       audioPlaying: false,
       audioSrc,
+      volume: 1,
       isAudioLoadPopupOpen: false,
       duration: 0,
       currentTime: 0,
@@ -23,6 +24,7 @@ class Controls extends Component {
       addingTrackAtTime: 0,
       currentTracklist: props.currentTracklist
     };
+    this.muteAudio = this.muteAudio.bind(this);
     this.toggleAudio = this.toggleAudio.bind(this);
     this.loadAudio = this.loadAudio.bind(this);
     this.updateAudioSrc = this.updateAudioSrc.bind(this);
@@ -118,10 +120,22 @@ class Controls extends Component {
   }
 
   setVolume(volume) {
-    console.log(volume / 100);
-    if (volume / 100 < 1) {
-      this.audioSrc.volume = volume / 100;
+    if (volume > 0 && volume <= 1) {
+      this.audioSrc.volume = volume;
+      this.setState({
+        volume
+      });
     }
+  }
+
+  muteAudio() {
+    this.setState(
+      {
+        volume: 0
+      },
+      () => this.setVolume(0)
+    );
+    return this.audioSrc.muted;
   }
 
   render() {
@@ -146,28 +160,34 @@ class Controls extends Component {
           className="audio-player--file"
           src={audioSrc}
         />
-        <VolumeControl setVolume={this.setVolume} />
+        <VolumeControl
+          setVolume={this.setVolume}
+          muteAudio={this.muteAudio}
+          volume={this.state.volume}
+        />
         <ProgressBar
           handleClick={this.updateTrackPosition}
           duration={duration}
           currentTime={currentTime}
         />
         <Button.Group labeled>
-          {audioPlaying
-            ? <Button
-                icon="pause"
-                content="Pause"
-                size="large"
-                onClick={this.toggleAudio}
-                color="yellow"
-              />
-            : <Button
-                icon="play"
-                content="Play"
-                size="large"
-                onClick={this.toggleAudio}
-                color="blue"
-              />}
+          {audioPlaying ? (
+            <Button
+              icon="pause"
+              content="Pause"
+              size="large"
+              onClick={this.toggleAudio}
+              color="yellow"
+            />
+          ) : (
+            <Button
+              icon="play"
+              content="Play"
+              size="large"
+              onClick={this.toggleAudio}
+              color="blue"
+            />
+          )}
           <Button size="large">
             <Dropzone
               style={dropzoneStyle}

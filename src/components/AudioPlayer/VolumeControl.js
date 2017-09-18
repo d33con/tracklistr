@@ -8,109 +8,116 @@ class VolumeControl extends Component {
     super(props);
     this.state = {
       isMouseDown: false,
-      isMouseInsideBar: false,
-      volume: 100,
+      volume: props.volume,
       isMuted: false
     };
 
-    this.setVolume = this.setVolume.bind(this);
+    this.setVolumeByDrag = this.setVolumeByDrag.bind(this);
+    this.setVolumeByClick = this.setVolumeByClick.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
+    this.handleMouseUp = this.handleMouseUp.bind(this);
     this.muteVolume = this.muteVolume.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.unMuteVolume = this.unMuteVolume.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener("mouseup", this.handleMouseUp);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("mouseup", this.handleMouseUp);
   }
 
   muteVolume() {
-    if (!this.state.isMuted) {
-      return this.setState(
-        {
-          volume: 0,
-          isMuted: true
-        },
-        () => this.props.setVolume(this.state.volume)
-      );
-    }
-    return this.setState(
-      {
-        volume: this.state.volume,
-        isMuted: false
-      },
-      () => this.props.setVolume(this.state.volume)
+    this.setState(
+      prevState => ({
+        isMuted: !prevState.isMuted,
+        volume: 0
+      }),
+      () => this.props.muteAudio()
     );
   }
 
-  onMouseDown() {
+  unMuteVolume() {
+    this.setState(
+      prevState => ({
+        isMuted: !prevState.isMuted,
+        volume: 1
+      }),
+      () => this.props.setVolume(1)
+    );
+  }
+  onMouseDown(e) {
     this.setState({
       isMouseDown: true
     });
   }
 
-  onMouseUp() {
+  handleMouseUp(e) {
     this.setState({
       isMouseDown: false
     });
   }
 
-  handleClick(clickPercent) {
-    console.log(clickPercent);
-    this.state.isMouseDown &&
-      this.setState({
-        volume: clickPercent
-      });
-  }
-
-  setVolume(e) {
+  setVolumeByDrag(e) {
     const elPosition = this.volumeBar.getBoundingClientRect();
     const clickPoint =
       (e.clientX - elPosition.left) / e.currentTarget.offsetWidth;
-    const clickPercent =
-      clickPoint * this.state.volume / this.state.volume * 100;
-    this.state.isMouseDown &&
+    if (this.state.isMouseDown) {
       this.setState(
         {
-          volume: clickPercent
+          volume: clickPoint
         },
-        () => this.props.setVolume(clickPercent)
+        () => this.props.setVolume(clickPoint)
       );
+    }
+    return false;
   }
 
+  setVolumeByClick(e) {
+    const elPosition = this.volumeBar.getBoundingClientRect();
+    const clickPoint =
+      (e.clientX - elPosition.left) / e.currentTarget.offsetWidth;
+    this.setState(
+      {
+        volume: clickPoint
+      },
+      () => this.props.setVolume(clickPoint)
+    );
+    return false;
+  }
   render() {
-    const barWidth = this.state.volume;
+    const { volume, isMuted } = this.state;
+
     const barStyle = {
-      width: `${barWidth}%`
+      width: `${volume * 100}%`
     };
 
     return (
       <div className="b-volume-bar-container">
         <div className="b-volume-bar-icon">
-          {barWidth === 0
-            ? <Icon.Group onClick={this.muteVolume} color="grey" size="large">
-                <Icon name="volume off" />
-                <Icon corner name="cancel" color="red" />
-              </Icon.Group>
-            : <Icon
-                name="volume up"
-                onClick={this.muteVolume}
-                color="blue"
-                size="large"
-              />}
+          {isMuted ? (
+            <Icon.Group onClick={this.unMuteVolume} color="grey" size="large">
+              <Icon name="volume off" />
+              <Icon corner name="cancel" color="red" />
+            </Icon.Group>
+          ) : (
+            <Icon
+              name="volume up"
+              onClick={this.muteVolume}
+              color="blue"
+              size="large"
+            />
+          )}
         </div>
         <div
           className="b-volume-bar-background"
-          onMouseMove={this.setVolume}
+          onMouseMove={this.setVolumeByDrag}
+          onClick={this.setVolumeByClick}
           onMouseDown={this.onMouseDown}
-          onMouseUp={this.onMouseUp}
           ref={volumeBar => (this.volumeBar = volumeBar)}
         >
-          <span className="b-volume-bar-filled" style={barStyle}>
-            <span
-              className="b-volume-bar-knob"
-              onMouseMove={this.setVolume}
-              onMouseDown={this.onMouseDown}
-              onMouseUp={this.onMouseUp}
-              style={{ left: `${barWidth}%` }}
-            />
-          </span>
+          <span className="b-volume-bar-filled" style={barStyle} />
         </div>
       </div>
     );
@@ -118,7 +125,8 @@ class VolumeControl extends Component {
 }
 
 VolumeControl.propTypes = {
-  setVolume: PropTypes.func.isRequired
+  setVolume: PropTypes.func.isRequired,
+  muteAudio: PropTypes.func.isRequired
 };
 
 export default VolumeControl;
