@@ -126,7 +126,8 @@ class VolumeControl extends Component {
 
 VolumeControl.propTypes = {
   setVolume: PropTypes.func.isRequired,
-  muteAudio: PropTypes.func.isRequired
+  muteAudio: PropTypes.func.isRequired,
+  volume: PropTypes.number.isRequired
 };
 
 export default VolumeControl;
