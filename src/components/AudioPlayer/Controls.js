@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { observer } from "mobx-react";
 import PropTypes from "prop-types";
 import { Button, Icon, Input, Popup } from "semantic-ui-react";
 import Dropzone from "react-dropzone";
@@ -9,7 +10,9 @@ import AddTrackModal from "./AddTrackModal";
 import audioSrc from "../../audio/DJ Advance - 93-4 Darkside Mini Mix.mp3";
 
 import "../../style/Controls.css";
+import store from "../../Store";
 
+@observer
 class Controls extends Component {
   constructor(props) {
     super(props);
@@ -47,7 +50,7 @@ class Controls extends Component {
 
   loadAudio(file) {
     this.setState({ audioSrc: file[0].preview }, () => this.toggleAudio());
-    this.props.initialiseTracklist();
+    store.initialiseTracklist();
   }
 
   openPopup(e) {
@@ -252,9 +255,7 @@ class Controls extends Component {
 }
 
 Controls.propTypes = {
-  currentTracklist: PropTypes.arrayOf(PropTypes.object).isRequired,
-  addReleaseToTracklist: PropTypes.func.isRequired,
-  initialiseTracklist: PropTypes.func.isRequired
+  addReleaseToTracklist: PropTypes.func.isRequired
 };
 
 export default Controls;

@@ -1,16 +1,21 @@
 import React, { Component } from "react";
+import { observer, Provider } from "mobx-react";
+import DevTools from "mobx-react-devtools";
 import v4 from "uuid";
 import { Container } from "semantic-ui-react";
-import { loadState, saveState } from "./HelperFunctions/localStorage";
+//import { loadState, saveState } from "./HelperFunctions/localStorage";
 
 import AudioPlayer from "./components/AudioPlayer/AudioPlayer";
 import TracklistTable from "./components/Tracklist/TracklistTable";
 
 import "./style/App.css";
 
+import store from "./Store";
+
+@observer
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       mixTitle: "",
@@ -18,23 +23,17 @@ class App extends Component {
     };
 
     this.addReleaseToTracklist = this.addReleaseToTracklist.bind(this);
-    this.saveMixTitle = this.saveMixTitle.bind(this);
     this.addEmptyTrack = this.addEmptyTrack.bind(this);
     this.deleteTrack = this.deleteTrack.bind(this);
     this.editTrack = this.editTrack.bind(this);
-    this.initialiseTracklist = this.initialiseTracklist.bind(this);
   }
 
   componentDidMount() {
-    const savedState = loadState();
-    this.setState({
-      mixTitle: savedState.mixTitle,
-      tracklist: savedState.tracklist
-    });
+    //store.loadState();
   }
 
   componentDidUpdate() {
-    saveState(this.state);
+    //saveState(this.state);
   }
 
   addReleaseToTracklist(track, trackTime) {
@@ -51,10 +50,6 @@ class App extends Component {
       }),
       () => this.sortTracklist(this.state.tracklist)
     );
-  }
-
-  saveMixTitle(title) {
-    this.setState({ mixTitle: title });
   }
 
   addEmptyTrack() {
@@ -96,47 +91,29 @@ class App extends Component {
     });
   }
 
-  initialiseTracklist() {
-    this.setState({
-      tracklist: [
-        {
-          trackTime: 0,
-          trackTitle: "",
-          trackUrl: "",
-          trackLabel: "",
-          releaseId: v4()
-        }
-      ]
-    });
-    console.log("init");
-  }
-
   render() {
     return (
-      <div className="b-app">
-        <div className="b-app-header">
-          <div className="b-app-header--title">Tracklistah</div>
+      <Provider store={store}>
+        <div className="b-app">
+          <div className="b-app-header">
+            <div className="b-app-header--title">Tracklistah</div>
+          </div>
+          <Container className="b-app-body">
+            <div className="b-app-body-player">
+              <AudioPlayer addReleaseToTracklist={this.addReleaseToTracklist} />
+            </div>
+            <div className="b-app-body-table">
+              <TracklistTable
+                tracklist={this.state.tracklist}
+                addEmptyTrack={this.addEmptyTrack}
+                deleteTrack={this.deleteTrack}
+                editTrack={this.editTrack}
+              />
+            </div>
+          </Container>
+          <DevTools />
         </div>
-        <Container className="b-app-body">
-          <div className="b-app-body-player">
-            <AudioPlayer
-              saveMixTitle={this.saveMixTitle}
-              mixTitle={this.state.mixTitle}
-              currentTracklist={this.state.tracklist}
-              addReleaseToTracklist={this.addReleaseToTracklist}
-              initialiseTracklist={this.initialiseTracklist}
-            />
-          </div>
-          <div className="b-app-body-table">
-            <TracklistTable
-              tracklist={this.state.tracklist}
-              addEmptyTrack={this.addEmptyTrack}
-              deleteTrack={this.deleteTrack}
-              editTrack={this.editTrack}
-            />
-          </div>
-        </Container>
-      </div>
+      </Provider>
     );
   }
 }

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { observer, inject } from "mobx-react";
 import PropTypes from "prop-types";
 import { Button, Icon, Table, Dimmer } from "semantic-ui-react";
 import convertTimeToString from "../../HelperFunctions/ConvertTimeToString";
@@ -6,6 +7,10 @@ import * as FileSaver from "file-saver";
 
 import EditTrack from "./EditTrack";
 
+import store from "../../Store";
+
+@inject("store")
+@observer
 class TracklistTable extends Component {
   constructor(props) {
     super(props);
@@ -23,13 +28,13 @@ class TracklistTable extends Component {
     this.saveToFile = this.saveToFile.bind(this);
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     this.setState({
-      tracklist: this.props.tracklist
+      tracklist: store.tracklist
     });
-  }
+  }*/
 
-  componentWillReceiveProps(nextProps) {
+  /*componentWillReceiveProps(nextProps) {
     this.state.tracklist !== nextProps.tracklist
       ? this.setState({
           tracklist: nextProps.tracklist
@@ -37,11 +42,11 @@ class TracklistTable extends Component {
       : this.setState({
           tracklist: this.props.tracklist
         });
-  }
+  }*/
 
   addTableTrack(e) {
     e.preventDefault();
-    this.props.addEmptyTrack();
+    store.addEmptyTrack();
   }
 
   editTrack(id) {
@@ -76,20 +81,13 @@ class TracklistTable extends Component {
 
   render() {
     const { showDimmer, editing } = this.state;
-    const { tracklist } = this.props;
-    const tableRows = tracklist.map(track =>
+    const tableRows = this.props.store.savedState.tracklist.map(track => (
       <Table.Row key={track.releaseId}>
+        <Table.Cell>{convertTimeToString(track.trackTime)}</Table.Cell>
         <Table.Cell>
-          {convertTimeToString(track.trackTime)}
+          <a href={track.trackUrl}>{track.trackTitle}</a>
         </Table.Cell>
-        <Table.Cell>
-          <a href={track.trackUrl}>
-            {track.trackTitle}
-          </a>
-        </Table.Cell>
-        <Table.Cell>
-          {track.trackLabel}
-        </Table.Cell>
+        <Table.Cell>{track.trackLabel}</Table.Cell>
         <Table.Cell collapsing textAlign="center">
           <Icon
             name="edit"
@@ -108,7 +106,7 @@ class TracklistTable extends Component {
           />
         </Table.Cell>
       </Table.Row>
-    );
+    ));
 
     return (
       <Dimmer.Dimmable dimmed={showDimmer}>
@@ -127,9 +125,7 @@ class TracklistTable extends Component {
             </Table.Row>
           </Table.Header>
 
-          <Table.Body>
-            {tableRows}
-          </Table.Body>
+          <Table.Body>{tableRows}</Table.Body>
 
           <Table.Footer fullWidth>
             <Table.Row>
@@ -152,7 +148,7 @@ class TracklistTable extends Component {
                   color="blue"
                   inverted
                   animated="fade"
-                  onClick={this.addTableTrack}
+                  onClick={() => this.props.store.addEmptyTrack()}
                 >
                   <Button.Content hidden>Add Row</Button.Content>
                   <Button.Content visible>

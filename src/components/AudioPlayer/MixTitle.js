@@ -1,60 +1,44 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { observable } from "mobx";
+import { inject, observer } from "mobx-react";
 import { Icon, Input, Popup } from "semantic-ui-react";
 
+@inject("store")
+@observer
 class MixTitle extends Component {
-  constructor(props) {
-    super(props);
+  @observable isInputBoxShowing = false;
+  @observable mixTitle = this.props.store.savedState.mixTitle;
 
-    this.state = {
-      mixTitle: "",
-      isInputBoxShowing: false
-    };
-
-    this.closePopup = this.closePopup.bind(this);
-    this.openPopup = this.openPopup.bind(this);
-    this.updateTitle = this.updateTitle.bind(this);
-    this.saveTitle = this.saveTitle.bind(this);
-  }
-
-  openPopup(e) {
+  openPopup = e => {
     e.preventDefault();
-    this.setState({
-      isInputBoxShowing: true
-    });
-  }
+    this.isInputBoxShowing = true;
+  };
 
-  closePopup(e) {
+  closePopup = e => {
     e.preventDefault();
-    this.setState({
-      isInputBoxShowing: false
-    });
-  }
+    this.isInputBoxShowing = false;
+  };
 
-  updateTitle(e) {
-    this.setState({ mixTitle: e.target.value });
-  }
+  updateTitle = e => {
+    this.mixTitle = e.target.value;
+  };
 
-  saveTitle(e) {
+  saveTitle = e => {
     e.preventDefault();
-    this.setState({
-      isInputBoxShowing: false
-    });
-    this.props.saveNewTitle(this.state.mixTitle);
-  }
+    this.isInputBoxShowing = false;
+    this.props.store.saveMixTitle(this.mixTitle);
+  };
 
   render() {
-    const { title } = this.props;
-    const { isInputBoxShowing } = this.state;
     return (
       <div>
-        {title}
+        {this.mixTitle}
         <div>
           <Popup
             trigger={<Icon link name="edit" size="small" />}
             on="click"
             position="bottom center"
-            open={isInputBoxShowing}
+            open={this.isInputBoxShowing}
             onOpen={this.openPopup}
             onClose={this.closePopup}
           >
@@ -82,10 +66,5 @@ class MixTitle extends Component {
     );
   }
 }
-
-MixTitle.propTypes = {
-  title: PropTypes.string,
-  saveNewTitle: PropTypes.func.isRequired
-};
 
 export default MixTitle;
