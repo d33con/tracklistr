@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { observable } from "mobx";
 import { observer, inject } from "mobx-react";
 import PropTypes from "prop-types";
 import { Button, Icon, Table, Dimmer } from "semantic-ui-react";
@@ -6,8 +7,6 @@ import convertTimeToString from "../../HelperFunctions/ConvertTimeToString";
 import * as FileSaver from "file-saver";
 
 import EditTrack from "./EditTrack";
-
-import store from "../../Store";
 
 @inject("store")
 @observer
@@ -21,12 +20,12 @@ class TracklistTable extends Component {
       editing: {}
     };
 
-    this.addTableTrack = this.addTableTrack.bind(this);
     this.editTrack = this.editTrack.bind(this);
-    this.deleteTrack = this.deleteTrack.bind(this);
     this.updateTrack = this.updateTrack.bind(this);
     this.saveToFile = this.saveToFile.bind(this);
   }
+
+  @observable showDimmer = false;
 
   /*componentDidMount() {
     this.setState({
@@ -44,20 +43,12 @@ class TracklistTable extends Component {
         });
   }*/
 
-  addTableTrack(e) {
-    e.preventDefault();
-    store.addEmptyTrack();
-  }
-
   editTrack(id) {
+    this.showDimmer = true;
     this.setState({
       showDimmer: true,
       editing: this.state.tracklist.find(track => track.releaseId === id)
     });
-  }
-
-  deleteTrack(id) {
-    this.props.deleteTrack(id);
   }
 
   updateTrack(formPayload) {
@@ -69,19 +60,20 @@ class TracklistTable extends Component {
 
   // check
   saveToFile() {
-    const tracklist = this.state.tracklist.map(track => {
+    const tracklist = this.props.store.savedState.tracklist.map(track => {
       const timestamp = convertTimeToString(track.trackTime);
       return `${timestamp} - ${track.trackTitle} - ${track.trackLabel}`;
     });
     const blob = new Blob([tracklist.join("\r\n")], {
       type: "text/plain;charset=utf-8"
     });
-    FileSaver.saveAs(blob, `${this.props.mixTitle}.txt`);
+    FileSaver.saveAs(blob, `${this.props.store.savedState.mixTitle}.txt`);
   }
 
   render() {
     const { showDimmer, editing } = this.state;
-    const tableRows = this.props.store.savedState.tracklist.map(track => (
+    const { savedState } = this.props.store;
+    const tableRows = savedState.tracklist.map(track => (
       <Table.Row key={track.releaseId}>
         <Table.Cell>{convertTimeToString(track.trackTime)}</Table.Cell>
         <Table.Cell>
@@ -102,7 +94,7 @@ class TracklistTable extends Component {
             link
             color="red"
             size="large"
-            onClick={() => this.deleteTrack(track.releaseId)}
+            onClick={() => this.props.store.deleteTrack(track.releaseId)}
           />
         </Table.Cell>
       </Table.Row>
@@ -165,9 +157,6 @@ class TracklistTable extends Component {
 }
 
 TracklistTable.propTypes = {
-  tracklist: PropTypes.arrayOf(PropTypes.object).isRequired,
-  addEmptyTrack: PropTypes.func.isRequired,
-  deleteTrack: PropTypes.func.isRequired,
   editTrack: PropTypes.func.isRequired
 };
 
