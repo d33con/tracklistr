@@ -1,9 +1,7 @@
-import React, { Component } from "react";
-import { observer, Provider } from "mobx-react";
+import React from "react";
+import { Provider } from "mobx-react";
 import DevTools from "mobx-react-devtools";
-import v4 from "uuid";
 import { Container } from "semantic-ui-react";
-//import { loadState, saveState } from "./HelperFunctions/localStorage";
 
 import AudioPlayer from "./components/AudioPlayer/AudioPlayer";
 import TracklistTable from "./components/Tracklist/TracklistTable";
@@ -12,110 +10,25 @@ import "./style/App.css";
 
 import store from "./Store";
 
-@observer
-class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      mixTitle: "",
-      tracklist: []
-    };
-
-    this.addReleaseToTracklist = this.addReleaseToTracklist.bind(this);
-    this.addEmptyTrack = this.addEmptyTrack.bind(this);
-    this.deleteTrack = this.deleteTrack.bind(this);
-    this.editTrack = this.editTrack.bind(this);
-  }
-
-  componentDidMount() {
-    //store.loadState();
-  }
-
-  componentDidUpdate() {
-    //saveState(this.state);
-  }
-
-  addReleaseToTracklist(track, trackTime) {
-    const { trackTitle, trackUrl, trackLabel, releaseId } = track;
-    this.setState(
-      prevState => ({
-        tracklist: prevState.tracklist.concat({
-          trackTime,
-          trackTitle,
-          trackUrl,
-          trackLabel,
-          releaseId
-        })
-      }),
-      () => this.sortTracklist(this.state.tracklist)
-    );
-  }
-
-  addEmptyTrack() {
-    this.setState(prevState => ({
-      tracklist: prevState.tracklist.concat({
-        trackTime: 0,
-        trackTitle: "",
-        trackUrl: "",
-        trackLabel: "",
-        releaseId: v4()
-      })
-    }));
-  }
-
-  deleteTrack(id) {
-    this.setState({
-      tracklist: this.state.tracklist.filter(track => track.releaseId !== id)
-    });
-  }
-
-  editTrack(newTracklist) {
-    this.setState(
-      prevState => ({
-        tracklist: [
-          ...prevState.tracklist.filter(
-            tracks => tracks.releaseId !== newTracklist.releaseId
-          ),
-          newTracklist
-        ]
-      }),
-      () => this.sortTracklist(this.state.tracklist)
-    );
-  }
-
-  sortTracklist(tracklist) {
-    const sortedTracklist = tracklist.sort((a, b) => a.trackTime - b.trackTime);
-    this.setState({
-      tracklist: sortedTracklist
-    });
-  }
-
-  render() {
-    return (
-      <Provider store={store}>
-        <div className="b-app">
-          <div className="b-app-header">
-            <div className="b-app-header--title">Tracklistah</div>
-          </div>
-          <Container className="b-app-body">
-            <div className="b-app-body-player">
-              <AudioPlayer addReleaseToTracklist={this.addReleaseToTracklist} />
-            </div>
-            <div className="b-app-body-table">
-              <TracklistTable
-                tracklist={this.state.tracklist}
-                addEmptyTrack={this.addEmptyTrack}
-                deleteTrack={this.deleteTrack}
-                editTrack={this.editTrack}
-              />
-            </div>
-          </Container>
-          <DevTools />
+const App = () => {
+  return (
+    <Provider store={store}>
+      <div className="b-app">
+        <div className="b-app-header">
+          <div className="b-app-header--title">Tracklistah</div>
         </div>
-      </Provider>
-    );
-  }
-}
+        <Container className="b-app-body">
+          <div className="b-app-body-player">
+            <AudioPlayer />
+          </div>
+          <div className="b-app-body-table">
+            <TracklistTable />
+          </div>
+        </Container>
+        <DevTools />
+      </div>
+    </Provider>
+  );
+};
 
 export default App;

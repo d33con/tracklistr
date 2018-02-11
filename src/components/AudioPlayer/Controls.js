@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { observer } from "mobx-react";
-import PropTypes from "prop-types";
+import { observable } from "mobx";
+import { observer, inject } from "mobx-react";
+
 import { Button, Icon, Input, Popup } from "semantic-ui-react";
 import Dropzone from "react-dropzone";
 
@@ -10,23 +11,17 @@ import AddTrackModal from "./AddTrackModal";
 import audioSrc from "../../audio/DJ Advance - 93-4 Darkside Mini Mix.mp3";
 
 import "../../style/Controls.css";
-import store from "../../Store";
 
+@inject("store")
 @observer
 class Controls extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      audioPlaying: false,
       audioSrc,
-      volume: 1,
-      isAudioLoadPopupOpen: false,
-      duration: 0,
-      currentTime: 0,
-      addingTrack: false,
-      addingTrackAtTime: 0,
       currentTracklist: props.currentTracklist
     };
+    this.store = this.props.store;
     this.muteAudio = this.muteAudio.bind(this);
     this.toggleAudio = this.toggleAudio.bind(this);
     this.loadAudio = this.loadAudio.bind(this);
@@ -41,30 +36,47 @@ class Controls extends Component {
     this.addReleaseToTracklist = this.addReleaseToTracklist.bind(this);
   }
 
+  @observable duration = 0;
+  @observable audioPlaying = false;
+  @observable currentTime = 0;
+  @observable isAudioLoadPopupOpen = false;
+  @observable volume = 1;
+  @observable addingTrack = false;
+  @observable addingTrackAtTime = 0;
+
   componentDidMount() {
     this.audioSrc.addEventListener("durationchange", e => {
       const duration = Math.floor(e.currentTarget.duration);
-      this.setState({ duration });
+      this.duration = duration;
     });
   }
 
   loadAudio(file) {
     this.setState({ audioSrc: file[0].preview }, () => this.toggleAudio());
-    store.initialiseTracklist();
+    this.store.initialiseTracklist();
+  }
+
+  toggleAudio() {
+    this.audioPlaying = !this.audioPlaying;
+    this.audioSrc.addEventListener("timeupdate", e => {
+      const currentTime = Math.floor(e.currentTarget.currentTime);
+      this.currentTime = currentTime;
+    });
+    this.audioSrc.addEventListener("ended", () => {
+      this.audioPlaying = false;
+      this.currentTime = 0;
+    });
+    return this.audioPlaying ? this.audioSrc.play() : this.audioSrc.pause();
   }
 
   openPopup(e) {
     e.preventDefault();
-    this.setState({
-      isAudioLoadPopupOpen: true
-    });
+    this.isAudioLoadPopupOpen = true;
   }
 
   closePopup(e) {
     e.preventDefault();
-    this.setState({
-      isAudioLoadPopupOpen: false
-    });
+    this.isAudioLoadPopupOpen = false;
   }
 
   updateAudioSrc(e) {
@@ -73,71 +85,42 @@ class Controls extends Component {
 
   loadAudioFromUrl(e) {
     e.preventDefault();
-    this.setState({
-      isAudioLoadPopupOpen: false
-    });
+    this.isAudioLoadPopupOpen = false;
     this.toggleAudio();
-    this.props.initialiseTracklist();
-  }
-
-  toggleAudio() {
-    this.setState(prevState => ({ audioPlaying: !prevState.audioPlaying }));
-    this.audioSrc.addEventListener("timeupdate", e => {
-      const currentTime = Math.floor(e.currentTarget.currentTime);
-      this.setState({ currentTime });
-    });
-    this.audioSrc.addEventListener("ended", () => {
-      this.setState({
-        audioPlaying: false,
-        currentTime: 0
-      });
-    });
-    return this.state.audioPlaying
-      ? this.audioSrc.pause()
-      : this.audioSrc.play();
+    this.store.initialiseTracklist();
   }
 
   updateTrackPosition(percent) {
-    const currentTime = Math.floor(this.state.duration * (percent / 100));
-    this.setState({ currentTime });
+    const currentTime = Math.floor(this.duration * (percent / 100));
+    this.currentTime = currentTime;
     this.audioSrc.currentTime = currentTime;
   }
 
   openModal() {
-    this.setState({
-      addingTrack: true,
-      addingTrackAtTime: this.state.currentTime
-    });
+    this.addingTrack = true;
+    this.addingTrackAtTime = this.currentTime;
   }
 
   closeModal() {
-    this.setState({
-      addingTrack: false
-    });
+    this.addingTrack = false;
   }
 
   addReleaseToTracklist(track) {
-    const trackTime = this.state.addingTrackAtTime;
-    this.props.addReleaseToTracklist(track, trackTime);
+    const trackTime = this.addingTrackAtTime;
+    this.store.addReleaseToTracklist(track, trackTime);
     this.closeModal();
   }
 
   setVolume(volume) {
     if (volume > 0 && volume <= 1) {
       this.audioSrc.volume = volume;
-      this.setState({
-        volume
-      });
+      this.volume = volume;
     }
   }
 
   muteAudio() {
-    this.setState(
-      {
-        volume: 0
-      },
-      () => this.setVolume(0)
-    );
+    this.volume = 0;
+    this.setVolume(0);
     return this.audioSrc.muted;
   }
 
@@ -146,15 +129,7 @@ class Controls extends Component {
       style: "none"
     };
 
-    const {
-      audioSrc,
-      duration,
-      currentTime,
-      audioPlaying,
-      isAudioLoadPopupOpen,
-      addingTrack,
-      addingTrackAtTime
-    } = this.state;
+    const { audioSrc } = this.state;
 
     return (
       <div className="b-audio-player-controls">
@@ -166,15 +141,15 @@ class Controls extends Component {
         <VolumeControl
           setVolume={this.setVolume}
           muteAudio={this.muteAudio}
-          volume={this.state.volume}
+          volume={this.volume}
         />
         <ProgressBar
           handleClick={this.updateTrackPosition}
-          duration={duration}
-          currentTime={currentTime}
+          duration={this.duration}
+          currentTime={this.currentTime}
         />
         <Button.Group labeled>
-          {audioPlaying ? (
+          {this.audioPlaying ? (
             <Button
               icon="pause"
               content="Pause"
@@ -210,7 +185,7 @@ class Controls extends Component {
             }
             on="click"
             position="right center"
-            open={isAudioLoadPopupOpen}
+            open={this.isAudioLoadPopupOpen}
             onOpen={this.openPopup}
             onClose={this.closePopup}
           >
@@ -243,9 +218,9 @@ class Controls extends Component {
             onClick={this.openModal}
           />
           <AddTrackModal
-            shown={addingTrack}
+            shown={this.addingTrack}
             onClose={this.closeModal}
-            currentTime={addingTrackAtTime}
+            currentTime={this.addingTrackAtTime}
             addReleaseToTracklist={this.addReleaseToTracklist}
           />
         </div>
@@ -253,9 +228,4 @@ class Controls extends Component {
     );
   }
 }
-
-Controls.propTypes = {
-  addReleaseToTracklist: PropTypes.func.isRequired
-};
-
 export default Controls;

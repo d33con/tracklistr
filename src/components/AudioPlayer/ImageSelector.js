@@ -1,48 +1,38 @@
 import React, { Component } from "react";
+import { observable } from "mobx";
+import { observer } from "mobx-react";
 import { Dimmer, Icon, Image } from "semantic-ui-react";
 import Dropzone from "react-dropzone";
 
 import testImg from "../../img/test.jpg";
 import "../../style/AudioPlayer.css";
 
+@observer
 class ImageSelector extends Component {
-  constructor() {
-    super();
-    this.state = {
-      imgSrc: testImg
-    };
-    this.handleShow = this.handleShow.bind(this);
-    this.handleHide = this.handleHide.bind(this);
-    this.loadImage = this.loadImage.bind(this);
-  }
+  @observable imgSrc = testImg;
+  @observable active = false;
 
-  handleShow() {
-    this.setState({
-      active: true
-    });
-  }
+  handleShow = () => {
+    this.active = true;
+  };
 
-  handleHide() {
-    this.setState({
-      active: false
-    });
-  }
+  handleHide = () => {
+    this.active = false;
+  };
 
-  loadImage(file) {
-    this.setState({
-      imgSrc: file[0].preview
-    });
-  }
+  loadImage = file => {
+    this.imgSrc = file[0].preview;
+  };
 
   render() {
-    const { active, imgSrc } = this.state;
+    const { active, imgSrc, handleHide, handleShow, loadImage } = this;
     const dropzoneStyle = {
       style: "none"
     };
 
     const content = (
       <Dropzone
-        onDrop={this.loadImage}
+        onDrop={loadImage}
         accept="image/*"
         multiple={false}
         style={dropzoneStyle}
@@ -55,12 +45,9 @@ class ImageSelector extends Component {
       <Dimmer.Dimmable
         as={Image}
         dimmed={active}
-        dimmer={{
-          active,
-          content
-        }}
-        onMouseEnter={this.handleShow}
-        onMouseLeave={this.handleHide}
+        dimmer={{ active, content }}
+        onMouseEnter={handleShow}
+        onMouseLeave={handleHide}
         src={imgSrc}
         size="large"
         className="b-audio-player--cover-img"
