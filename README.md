@@ -1,6 +1,6 @@
 An app to play and tracklist mixes using data from Discogs release database
 
-![View](https://d33con.github.io/tracklistr/)
+[View](https://d33con.github.io/tracklistr/)
 
 Currently work in progress
 
