@@ -1,4 +1,4 @@
-import { observable, action, computed } from "mobx";
+import { observable, action } from "mobx";
 import v4 from "uuid";
 
 class Store {
@@ -41,26 +41,48 @@ class Store {
     } catch (err) {
       console.log(err);
     }
-  }
-
+  }*/
   @action
   saveState(state) {
     try {
       const savedState = JSON.stringify(state);
+      console.log(savedState);
       return localStorage.setItem("state", savedState);
     } catch (err) {
       console.log(err);
     }
-  }*/
+  }
 
-  @computed
-  get currentTracklist() {
-    return this.savedState.tracklist;
+  @action
+  sortTracklist() {
+    return this.savedState.tracklist.sort((a, b) => a.trackTime - b.trackTime);
+  }
+
+  @action
+  addReleaseToTracklist(track, trackTime) {
+    const { trackTitle, trackUrl, trackLabel, releaseId } = track;
+    this.savedState.tracklist = this.savedState.tracklist.concat({
+      trackTime,
+      trackTitle,
+      trackUrl,
+      trackLabel,
+      releaseId
+    });
+    this.sortTracklist();
+  }
+
+  @action
+  editTrack(newTracklist) {
+    this.savedState.tracklist
+      .filter(tracks => tracks.releaseId !== newTracklist.releaseId)
+      .concat(newTracklist);
+    this.sortTracklist();
   }
 
   @action
   saveMixTitle(title) {
     this.savedState.mixTitle = title;
+    this.saveState(this.savedState);
   }
 
   @action
@@ -86,6 +108,13 @@ class Store {
       releaseId: v4()
     });
     return this.savedState.tracklist;
+  }
+
+  @action
+  deleteTrack(id) {
+    this.savedState.tracklist = this.savedState.tracklist.filter(
+      track => track.releaseId !== id
+    );
   }
 }
 
