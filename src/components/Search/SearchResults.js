@@ -1,25 +1,21 @@
 import React, { Component } from "react";
+import { observable } from "mobx";
+import { observer } from "mobx-react";
 import PropTypes from "prop-types";
 import { List, Image, Icon } from "semantic-ui-react";
 import TrackDetailsDropdown from "./TrackDetailsDropdown";
 
+@observer
 class SearchResults extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      shown: props.shown
-    };
+  @observable shown = this.props.shown;
 
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick(id) {
-    this.setState(prevState => ({ shown: !prevState.shown }));
-    this.props.getReleaseDetails(id, this.state.shown);
-  }
+  handleClick = id => {
+    this.props.getReleaseDetails(id, this.shown);
+    return (this.shown = this.shown ? false : true);
+  };
 
   render() {
-    const { results, searchValue, addReleaseToTracklist, result } = this.props;
+    const { results, searchValue, result } = this.props;
     return (
       <div>
         {(() => {
@@ -34,20 +30,20 @@ class SearchResults extends Component {
                       <Image avatar floated="left" src={thumb} />
                       <List.Content floated="left">
                         <List.Header>
-                          <a href={`https://www.discogs.com${uri}`}>
-                            {title}
-                          </a>
-                          {track && id === track.data.id && this.state.shown
-                            ? <Icon
-                                name="caret up"
-                                link
-                                onClick={() => this.handleClick(id)}
-                              />
-                            : <Icon
-                                name="caret down"
-                                link
-                                onClick={() => this.handleClick(id)}
-                              />}
+                          <a href={`https://www.discogs.com${uri}`}>{title}</a>
+                          {track && id === track.data.id && this.shown ? (
+                            <Icon
+                              name="caret up"
+                              link
+                              onClick={() => this.handleClick(id)}
+                            />
+                          ) : (
+                            <Icon
+                              name="caret down"
+                              link
+                              onClick={() => this.handleClick(id)}
+                            />
+                          )}
                         </List.Header>
                         <List.Description>
                           {label && label.length && label[0]} /{" "}
@@ -56,12 +52,12 @@ class SearchResults extends Component {
                         <List.List>
                           <List.Header>
                             {track &&
-                              id === track.data.id &&
-                              <TrackDetailsDropdown
-                                track={track.data}
-                                label={label}
-                                addReleaseToTracklist={addReleaseToTracklist}
-                              />}
+                              id === track.data.id && (
+                                <TrackDetailsDropdown
+                                  track={track.data}
+                                  label={label}
+                                />
+                              )}
                           </List.Header>
                         </List.List>
                       </List.Content>
@@ -85,7 +81,6 @@ SearchResults.propTypes = {
   result: PropTypes.object,
   shown: PropTypes.bool.isRequired,
   searchValue: PropTypes.string.isRequired,
-  addReleaseToTracklist: PropTypes.func.isRequired,
   getReleaseDetails: PropTypes.func.isRequired
 };
 
