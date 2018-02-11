@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { observable } from "mobx";
+import { observer } from "mobx-react";
 import axios from "axios";
 import { Divider, Input, Segment } from "semantic-ui-react";
 
@@ -7,22 +8,13 @@ import SearchResults from "./SearchResults";
 
 import "../../style/SearchBox.css";
 
+@observer
 class SearchBox extends Component {
-  constructor(props) {
-    super(props);
+  @observable results = [];
+  @observable searchValue = "";
+  @observable shown = false;
 
-    this.state = {
-      results: [],
-      searchValue: "",
-      shown: false
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.getSearchSuggestions = this.getSearchSuggestions.bind(this);
-    this.getReleaseDetails = this.getReleaseDetails.bind(this);
-  }
-
-  getSearchSuggestions(value) {
+  getSearchSuggestions = value => {
     axios
       .get("https://api.discogs.com/database/search", {
         params: {
@@ -35,21 +27,19 @@ class SearchBox extends Component {
       })
       .then(res => {
         const results = res.data.results.map(obj => obj);
-        this.setState({ results });
+        this.results = results;
       });
-  }
+  };
 
-  handleChange(e) {
-    this.setState({
-      searchValue: e.currentTarget.value
-    });
+  handleChange = e => {
+    this.searchValue = e.currentTarget.value;
     return (
       e.currentTarget.value.length > 3 &&
       this.getSearchSuggestions(e.currentTarget.value)
     );
-  }
+  };
 
-  getReleaseDetails(releaseId, showing) {
+  getReleaseDetails = (releaseId, showing) => {
     if (!showing) {
       axios
         .get("https://api.discogs.com/masters/" + releaseId, {
@@ -58,29 +48,23 @@ class SearchBox extends Component {
           }
         })
         .then(result => {
-          this.setState({
-            result,
-            shown: true
-          });
+          this.result = result;
+          this.shown = true;
         });
     } else {
-      this.setState({
-        result: null,
-        shown: false
-      });
+      this.result = null;
+      this.shown = false;
     }
-  }
+  };
 
   render() {
-    const { searchValue, results, result, shown } = this.state;
-    const { addReleaseToTracklist } = this.props;
     return (
       <Segment padded>
         <Input
           placeholder="eg. Artist - Title or Catalogue Number"
           size="huge"
           icon="search"
-          value={searchValue}
+          value={this.searchValue}
           onChange={this.handleChange}
           fluid
           autoFocus
@@ -89,20 +73,15 @@ class SearchBox extends Component {
           Results
         </Divider>
         <SearchResults
-          results={results}
-          searchValue={searchValue}
-          addReleaseToTracklist={addReleaseToTracklist}
+          results={this.results}
+          searchValue={this.searchValue}
           getReleaseDetails={this.getReleaseDetails}
-          result={result}
-          shown={shown}
+          result={this.result}
+          shown={this.shown}
         />
       </Segment>
     );
   }
 }
-
-SearchBox.propTypes = {
-  addReleaseToTracklist: PropTypes.func.isRequired
-};
 
 export default SearchBox;
