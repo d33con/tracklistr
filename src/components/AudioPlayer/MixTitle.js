@@ -9,13 +9,11 @@ class MixTitle extends Component {
   @observable isInputBoxShowing = false;
   @observable mixTitle = this.props.store.savedState.mixTitle;
 
-  openPopup = e => {
-    e.preventDefault();
+  openPopup = () => {
     this.isInputBoxShowing = true;
   };
 
-  closePopup = e => {
-    e.preventDefault();
+  closePopup = () => {
     this.isInputBoxShowing = false;
   };
 
@@ -23,13 +21,20 @@ class MixTitle extends Component {
     this.mixTitle = e.target.value;
   };
 
-  saveTitle = e => {
-    e.preventDefault();
+  saveTitle = () => {
     this.isInputBoxShowing = false;
     this.props.store.saveMixTitle(this.mixTitle);
   };
 
   render() {
+    const {
+      isInputBoxShowing,
+      openPopup,
+      closePopup,
+      updateTitle,
+      saveTitle
+    } = this;
+
     return (
       <div>
         {this.mixTitle}
@@ -38,20 +43,20 @@ class MixTitle extends Component {
             trigger={<Icon link name="edit" size="small" />}
             on="click"
             position="bottom center"
-            open={this.isInputBoxShowing}
-            onOpen={this.openPopup}
-            onClose={this.closePopup}
+            open={isInputBoxShowing}
+            onOpen={openPopup}
+            onClose={closePopup}
           >
             <Popup.Content>
               <Input
                 placeholder="Enter title"
                 autoFocus
                 size="large"
-                onChange={this.updateTitle}
+                onChange={updateTitle}
                 icon={
                   <Icon
                     name="add"
-                    onClick={this.saveTitle}
+                    onClick={saveTitle}
                     link
                     circular
                     inverted
