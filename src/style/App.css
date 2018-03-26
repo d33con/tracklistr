@@ -5,7 +5,7 @@
 
 .b-app-header {
   height: 10vh;
-  font-family: 'Cairo', sans-serif;
+  font-family: "Cairo", sans-serif;
   padding: 3rem;
   color: #0d454d;
 }
@@ -18,7 +18,9 @@
 
 .b-app-body {
   margin: 3rem 0 !important;
-  display: flex !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 30px;
 }
 
 .b-app-body-player {
