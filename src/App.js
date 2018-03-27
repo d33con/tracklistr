@@ -114,9 +114,9 @@ class App extends Component {
   render() {
     return (
       <div className="b-app">
-        <div className="b-app-header">
+        <Container className="b-app-header">
           <div className="b-app-header--title">Tracklistah</div>
-        </div>
+        </Container>
         <Container className="b-app-body">
           <div className="b-app-body-player">
             <AudioPlayer
