@@ -19,14 +19,14 @@
 .b-app-body {
   margin: 3rem 0 !important;
   display: grid !important;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
 }
 
 .b-app-body-player {
-  padding: 1rem 4rem;
+  padding: 1rem;
 }
 
 .b-app-body-table {
-  padding: 1rem 4rem;
+  padding: 1rem;
+  width: 600px;
 }
