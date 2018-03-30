@@ -20,7 +20,7 @@
     "prop-types": "^15.6.1",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
-    "react-dropzone": "^3.13.4",
+    "react-dropzone": "^4.2.9",
     "semantic-ui-css": "^2.3.1",
     "semantic-ui-react": "^0.68.5"
   },
