@@ -25,20 +25,7 @@ class EditTrack extends Component {
   }
 
   componentDidMount() {
-    const {
-      trackTime,
-      trackTitle,
-      trackLabel,
-      trackUrl,
-      releaseId
-    } = this.props.track;
-    this.setState({
-      trackTime,
-      trackTitle,
-      trackLabel,
-      trackUrl,
-      releaseId
-    });
+    this.setState({ ...this.props.track });
   }
 
   handleMinutesIncrease(e) {
