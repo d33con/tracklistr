@@ -18,7 +18,6 @@ class TracklistTable extends Component {
 
     this.addTableTrack = this.addTableTrack.bind(this);
     this.editTrack = this.editTrack.bind(this);
-    this.deleteTrack = this.deleteTrack.bind(this);
     this.updateTrack = this.updateTrack.bind(this);
     this.saveToFile = this.saveToFile.bind(this);
   }
@@ -51,10 +50,6 @@ class TracklistTable extends Component {
     });
   }
 
-  deleteTrack(id) {
-    this.props.deleteTrack(id);
-  }
-
   updateTrack(formPayload) {
     this.setState({
       showDimmer: false
@@ -76,20 +71,14 @@ class TracklistTable extends Component {
 
   render() {
     const { showDimmer, editing } = this.state;
-    const { tracklist } = this.props;
-    const tableRows = tracklist.map(track =>
+    const { tracklist, deleteTrack } = this.props;
+    const tableRows = tracklist.map(track => (
       <Table.Row key={track.releaseId}>
+        <Table.Cell>{convertTimeToString(track.trackTime)}</Table.Cell>
         <Table.Cell>
-          {convertTimeToString(track.trackTime)}
+          <a href={track.trackUrl}>{track.trackTitle}</a>
         </Table.Cell>
-        <Table.Cell>
-          <a href={track.trackUrl}>
-            {track.trackTitle}
-          </a>
-        </Table.Cell>
-        <Table.Cell>
-          {track.trackLabel}
-        </Table.Cell>
+        <Table.Cell>{track.trackLabel}</Table.Cell>
         <Table.Cell collapsing textAlign="center">
           <Icon
             name="edit"
@@ -104,11 +93,11 @@ class TracklistTable extends Component {
             link
             color="red"
             size="large"
-            onClick={() => this.deleteTrack(track.releaseId)}
+            onClick={() => deleteTrack(track.releaseId)}
           />
         </Table.Cell>
       </Table.Row>
-    );
+    ));
 
     return (
       <Dimmer.Dimmable dimmed={showDimmer}>
@@ -127,9 +116,7 @@ class TracklistTable extends Component {
             </Table.Row>
           </Table.Header>
 
-          <Table.Body>
-            {tableRows}
-          </Table.Body>
+          <Table.Body>{tableRows}</Table.Body>
 
           <Table.Footer fullWidth>
             <Table.Row>
