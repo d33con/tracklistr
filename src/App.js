@@ -37,6 +37,10 @@ class App extends Component {
     saveState(this.state);
   }
 
+  saveMixTitle(title) {
+    this.setState({ mixTitle: title });
+  }
+
   addReleaseToTracklist(track, trackTime) {
     const { trackTitle, trackUrl, trackLabel, releaseId } = track;
     this.setState(
@@ -51,10 +55,6 @@ class App extends Component {
       }),
       () => this.sortTracklist(this.state.tracklist)
     );
-  }
-
-  saveMixTitle(title) {
-    this.setState({ mixTitle: title });
   }
 
   addEmptyTrack() {
