@@ -46,6 +46,7 @@ class Controls extends Component {
   }
 
   loadAudio(file) {
+    console.log("loading");
     this.setState({ audioSrc: file[0].preview }, () => this.toggleAudio());
     this.props.initialiseTracklist();
   }
