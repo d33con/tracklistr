@@ -58,15 +58,19 @@ class App extends Component {
   }
 
   addEmptyTrack() {
-    this.setState(prevState => ({
-      tracklist: prevState.tracklist.concat({
-        trackTime: 0,
-        trackTitle: "",
-        trackUrl: "",
-        trackLabel: "",
-        releaseId: v4()
-      })
-    }));
+    const { tracklist } = this.state;
+    this.setState({
+      tracklist: [
+        ...tracklist,
+        {
+          trackTime: 0,
+          trackTitle: "",
+          trackUrl: "",
+          trackLabel: "",
+          releaseId: v4()
+        }
+      ]
+    });
   }
 
   deleteTrack(id) {
@@ -108,7 +112,6 @@ class App extends Component {
         }
       ]
     });
-    console.log("init");
   }
 
   render() {
