@@ -71,14 +71,7 @@ class EditTrack extends Component {
 
   handleFormSubmit(e) {
     e.preventDefault();
-    const formPayload = {
-      trackTime: this.state.trackTime,
-      trackTitle: this.state.trackTitle,
-      trackLabel: this.state.trackLabel,
-      trackUrl: this.state.trackUrl,
-      releaseId: this.state.releaseId
-    };
-    this.props.updateTrack(formPayload);
+    this.props.updateTrack({ ...this.state });
   }
 
   render() {
