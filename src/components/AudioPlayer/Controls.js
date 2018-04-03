@@ -11,6 +11,12 @@ import audioSrc from "../../audio/DJ Advance - 93-4 Darkside Mini Mix.mp3";
 import "../../style/Controls.css";
 
 class Controls extends Component {
+  static propTypes = {
+    currentTracklist: PropTypes.arrayOf(PropTypes.object).isRequired,
+    addReleaseToTracklist: PropTypes.func.isRequired,
+    initialiseTracklist: PropTypes.func.isRequired
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -251,11 +257,5 @@ class Controls extends Component {
     );
   }
 }
-
-Controls.propTypes = {
-  currentTracklist: PropTypes.arrayOf(PropTypes.object).isRequired,
-  addReleaseToTracklist: PropTypes.func.isRequired,
-  initialiseTracklist: PropTypes.func.isRequired
-};
 
 export default Controls;
