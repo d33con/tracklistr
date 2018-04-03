@@ -3,6 +3,11 @@ import PropTypes from "prop-types";
 import { Icon, Input, Popup } from "semantic-ui-react";
 
 class MixTitle extends Component {
+  static propTypes = {
+    title: PropTypes.string,
+    saveNewTitle: PropTypes.func.isRequired
+  };
+
   constructor(props) {
     super(props);
 
@@ -82,10 +87,5 @@ class MixTitle extends Component {
     );
   }
 }
-
-MixTitle.propTypes = {
-  title: PropTypes.string,
-  saveNewTitle: PropTypes.func.isRequired
-};
 
 export default MixTitle;
