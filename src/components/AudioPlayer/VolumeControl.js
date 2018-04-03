@@ -4,6 +4,12 @@ import { Icon } from "semantic-ui-react";
 import "../../style/VolumeControl.css";
 
 class VolumeControl extends Component {
+  static propTypes = {
+    setVolume: PropTypes.func.isRequired,
+    muteAudio: PropTypes.func.isRequired,
+    volume: PropTypes.number.isRequired
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -123,11 +129,5 @@ class VolumeControl extends Component {
     );
   }
 }
-
-VolumeControl.propTypes = {
-  setVolume: PropTypes.func.isRequired,
-  muteAudio: PropTypes.func.isRequired,
-  volume: PropTypes.number.isRequired
-};
 
 export default VolumeControl;
