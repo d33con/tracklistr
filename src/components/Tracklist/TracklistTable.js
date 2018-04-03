@@ -7,6 +7,13 @@ import * as FileSaver from "file-saver";
 import EditTrack from "./EditTrack";
 
 class TracklistTable extends Component {
+  static propTypes = {
+    tracklist: PropTypes.arrayOf(PropTypes.object).isRequired,
+    addEmptyTrack: PropTypes.func.isRequired,
+    deleteTrack: PropTypes.func.isRequired,
+    editTrack: PropTypes.func.isRequired
+  };
+
   constructor(props) {
     super(props);
 
@@ -151,12 +158,5 @@ class TracklistTable extends Component {
     );
   }
 }
-
-TracklistTable.propTypes = {
-  tracklist: PropTypes.arrayOf(PropTypes.object).isRequired,
-  addEmptyTrack: PropTypes.func.isRequired,
-  deleteTrack: PropTypes.func.isRequired,
-  editTrack: PropTypes.func.isRequired
-};
 
 export default TracklistTable;
