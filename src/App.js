@@ -81,6 +81,7 @@ class App extends Component {
   }
 
   editTrack(newTracklist) {
+    // move logic out of setState
     this.setState(
       prevState => ({
         tracklist: [
@@ -116,6 +117,7 @@ class App extends Component {
   }
 
   render() {
+    const { tracklist, mixTitle } = this.state;
     return (
       <div className="b-app">
         <Container className="b-app-header">
@@ -125,15 +127,15 @@ class App extends Component {
           <div className="b-app-body-player">
             <AudioPlayer
               saveMixTitle={this.saveMixTitle}
-              mixTitle={this.state.mixTitle}
-              currentTracklist={this.state.tracklist}
+              mixTitle={mixTitle}
+              currentTracklist={tracklist}
               addReleaseToTracklist={this.addReleaseToTracklist}
               initialiseTracklist={this.initialiseTracklist}
             />
           </div>
           <div className="b-app-body-table">
             <TracklistTable
-              tracklist={this.state.tracklist}
+              tracklist={tracklist}
               addEmptyTrack={this.addEmptyTrack}
               deleteTrack={this.deleteTrack}
               editTrack={this.editTrack}
