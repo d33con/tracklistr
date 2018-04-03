@@ -16,7 +16,6 @@ class TracklistTable extends Component {
       editing: {}
     };
 
-    this.addTableTrack = this.addTableTrack.bind(this);
     this.editTrack = this.editTrack.bind(this);
     this.updateTrack = this.updateTrack.bind(this);
     this.saveToFile = this.saveToFile.bind(this);
@@ -36,11 +35,6 @@ class TracklistTable extends Component {
       : this.setState({
           tracklist: this.props.tracklist
         });
-  }
-
-  addTableTrack(e) {
-    e.preventDefault();
-    this.props.addEmptyTrack();
   }
 
   editTrack(id) {
@@ -71,7 +65,7 @@ class TracklistTable extends Component {
 
   render() {
     const { showDimmer, editing } = this.state;
-    const { tracklist, deleteTrack } = this.props;
+    const { tracklist, deleteTrack, addEmptyTrack } = this.props;
     const tableRows = tracklist.map(track => (
       <Table.Row key={track.releaseId}>
         <Table.Cell>{convertTimeToString(track.trackTime)}</Table.Cell>
@@ -139,7 +133,7 @@ class TracklistTable extends Component {
                   color="blue"
                   inverted
                   animated="fade"
-                  onClick={this.addTableTrack}
+                  onClick={addEmptyTrack}
                 >
                   <Button.Content hidden>Add Row</Button.Content>
                   <Button.Content visible>
