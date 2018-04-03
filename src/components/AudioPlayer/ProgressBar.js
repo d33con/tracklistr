@@ -4,6 +4,12 @@ import convertTimeToString from "../../HelperFunctions/ConvertTimeToString";
 import "../../style/ProgressBar.css";
 
 class ProgressBar extends Component {
+  static propTypes = {
+    duration: PropTypes.number.isRequired,
+    currentTime: PropTypes.number.isRequired,
+    handleClick: PropTypes.func.isRequired
+  };
+
   constructor(props) {
     super(props);
 
@@ -32,21 +38,17 @@ class ProgressBar extends Component {
       <div
         className="b-progress"
         onClick={this.getTrackPosition}
-        ref={progressBar => this.progressBar = progressBar}
+        ref={progressBar => (this.progressBar = progressBar)}
       >
         <div className="b-progress-bar" style={barStyle} />
         <div className="b-progress-bar-label">
-          <span>{currentTime} / {duration}</span>
+          <span>
+            {currentTime} / {duration}
+          </span>
         </div>
       </div>
     );
   }
 }
-
-ProgressBar.propTypes = {
-  duration: PropTypes.number.isRequired,
-  currentTime: PropTypes.number.isRequired,
-  handleClick: PropTypes.func.isRequired
-};
 
 export default ProgressBar;
