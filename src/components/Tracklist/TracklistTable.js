@@ -66,32 +66,35 @@ class TracklistTable extends Component {
   render() {
     const { showDimmer, editing } = this.state;
     const { tracklist, deleteTrack, addEmptyTrack } = this.props;
-    const tableRows = tracklist.map(track => (
-      <Table.Row key={track.releaseId}>
-        <Table.Cell>{convertTimeToString(track.trackTime)}</Table.Cell>
-        <Table.Cell>
-          <a href={track.trackUrl}>{track.trackTitle}</a>
-        </Table.Cell>
-        <Table.Cell>{track.trackLabel}</Table.Cell>
-        <Table.Cell collapsing textAlign="center">
-          <Icon
-            name="edit"
-            link
-            size="large"
-            onClick={() => this.editTrack(track.releaseId)}
-          />
-        </Table.Cell>
-        <Table.Cell collapsing textAlign="center">
-          <Icon
-            name="delete"
-            link
-            color="red"
-            size="large"
-            onClick={() => deleteTrack(track.releaseId)}
-          />
-        </Table.Cell>
-      </Table.Row>
-    ));
+    const tableRows = tracklist.map(track => {
+      const { releaseId, trackTitle, trackTime, trackLabel, trackUrl } = track;
+      return (
+        <Table.Row key={releaseId}>
+          <Table.Cell>{convertTimeToString(trackTime)}</Table.Cell>
+          <Table.Cell>
+            <a href={trackUrl}>{trackTitle}</a>
+          </Table.Cell>
+          <Table.Cell>{trackLabel}</Table.Cell>
+          <Table.Cell collapsing textAlign="center">
+            <Icon
+              name="edit"
+              link
+              size="large"
+              onClick={() => this.editTrack(releaseId)}
+            />
+          </Table.Cell>
+          <Table.Cell collapsing textAlign="center">
+            <Icon
+              name="delete"
+              link
+              color="red"
+              size="large"
+              onClick={() => deleteTrack(releaseId)}
+            />
+          </Table.Cell>
+        </Table.Row>
+      );
+    });
 
     return (
       <Dimmer.Dimmable dimmed={showDimmer}>
