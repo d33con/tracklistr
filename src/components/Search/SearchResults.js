@@ -4,6 +4,15 @@ import { List, Image, Icon } from "semantic-ui-react";
 import TrackDetailsDropdown from "./TrackDetailsDropdown";
 
 class SearchResults extends Component {
+  static propTypes = {
+    results: PropTypes.arrayOf(PropTypes.object).isRequired,
+    result: PropTypes.object,
+    shown: PropTypes.bool.isRequired,
+    searchValue: PropTypes.string.isRequired,
+    addReleaseToTracklist: PropTypes.func.isRequired,
+    getReleaseDetails: PropTypes.func.isRequired
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -34,20 +43,20 @@ class SearchResults extends Component {
                       <Image avatar floated="left" src={thumb} />
                       <List.Content floated="left">
                         <List.Header>
-                          <a href={`https://www.discogs.com${uri}`}>
-                            {title}
-                          </a>
-                          {track && id === track.data.id && this.state.shown
-                            ? <Icon
-                                name="caret up"
-                                link
-                                onClick={() => this.handleClick(id)}
-                              />
-                            : <Icon
-                                name="caret down"
-                                link
-                                onClick={() => this.handleClick(id)}
-                              />}
+                          <a href={`https://www.discogs.com${uri}`}>{title}</a>
+                          {track && id === track.data.id && this.state.shown ? (
+                            <Icon
+                              name="caret up"
+                              link
+                              onClick={() => this.handleClick(id)}
+                            />
+                          ) : (
+                            <Icon
+                              name="caret down"
+                              link
+                              onClick={() => this.handleClick(id)}
+                            />
+                          )}
                         </List.Header>
                         <List.Description>
                           {label && label.length && label[0]} /{" "}
@@ -56,12 +65,13 @@ class SearchResults extends Component {
                         <List.List>
                           <List.Header>
                             {track &&
-                              id === track.data.id &&
-                              <TrackDetailsDropdown
-                                track={track.data}
-                                label={label}
-                                addReleaseToTracklist={addReleaseToTracklist}
-                              />}
+                              id === track.data.id && (
+                                <TrackDetailsDropdown
+                                  track={track.data}
+                                  label={label}
+                                  addReleaseToTracklist={addReleaseToTracklist}
+                                />
+                              )}
                           </List.Header>
                         </List.List>
                       </List.Content>
@@ -79,14 +89,5 @@ class SearchResults extends Component {
     );
   }
 }
-
-SearchResults.propTypes = {
-  results: PropTypes.arrayOf(PropTypes.object).isRequired,
-  result: PropTypes.object,
-  shown: PropTypes.bool.isRequired,
-  searchValue: PropTypes.string.isRequired,
-  addReleaseToTracklist: PropTypes.func.isRequired,
-  getReleaseDetails: PropTypes.func.isRequired
-};
 
 export default SearchResults;
