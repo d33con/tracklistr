@@ -7,6 +7,11 @@ import TimeInput from "../Form/TimeInput";
 import "../../style/EditTrack.css";
 
 class EditTrack extends Component {
+  static propTypes = {
+    track: PropTypes.object.isRequired,
+    updateTrack: PropTypes.func.isRequired
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -132,10 +137,5 @@ class EditTrack extends Component {
     );
   }
 }
-
-EditTrack.propTypes = {
-  track: PropTypes.object.isRequired,
-  updateTrack: PropTypes.func.isRequired
-};
 
 export default EditTrack;
