@@ -74,9 +74,10 @@ class App extends Component {
   }
 
   deleteTrack(id) {
-    this.setState({
-      tracklist: this.state.tracklist.filter(track => track.releaseId !== id)
-    });
+    const tracklist = this.state.tracklist.filter(
+      track => track.releaseId !== id
+    );
+    this.setState({ tracklist });
   }
 
   editTrack(newTracklist) {
