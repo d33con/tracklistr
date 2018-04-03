@@ -8,6 +8,10 @@ import SearchResults from "./SearchResults";
 import "../../style/SearchBox.css";
 
 class SearchBox extends Component {
+  static propTypes = {
+    addReleaseToTracklist: PropTypes.func.isRequired
+  };
+
   constructor(props) {
     super(props);
 
@@ -100,9 +104,5 @@ class SearchBox extends Component {
     );
   }
 }
-
-SearchBox.propTypes = {
-  addReleaseToTracklist: PropTypes.func.isRequired
-};
 
 export default SearchBox;
