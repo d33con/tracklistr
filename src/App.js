@@ -119,12 +119,12 @@ class App extends Component {
   render() {
     const { tracklist, mixTitle } = this.state;
     return (
-      <div className="b-app">
-        <Container className="b-app-header">
-          <div className="b-app-header--title">Tracklistah</div>
+      <div className="app">
+        <Container className="header">
+          <div className="header__title">Tracklistah</div>
         </Container>
-        <Container className="b-app-body">
-          <div className="b-app-body-player">
+        <Container className="main-body">
+          <div className="player">
             <AudioPlayer
               saveMixTitle={this.saveMixTitle}
               mixTitle={mixTitle}
@@ -133,7 +133,7 @@ class App extends Component {
               initialiseTracklist={this.initialiseTracklist}
             />
           </div>
-          <div className="b-app-body-table">
+          <div className="tracklist-table">
             <TracklistTable
               tracklist={tracklist}
               addEmptyTrack={this.addEmptyTrack}

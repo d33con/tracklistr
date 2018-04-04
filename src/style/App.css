@@ -1,32 +1,32 @@
-.b-app {
+.app {
   padding: 1rem;
   text-align: left;
 }
 
-.b-app-header {
+.header {
   height: 10vh;
   font-family: "Cairo", sans-serif;
   padding: 3rem;
   color: #0d454d;
 }
 
-.b-app-header--title {
+.header__title {
   font-size: 5rem;
   letter-spacing: 5px;
   text-transform: uppercase;
 }
 
-.b-app-body {
+.main-body {
   margin: 3rem 0 !important;
   display: grid !important;
   grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
 }
 
-.b-app-body-player {
+.player {
   padding: 1rem;
 }
 
-.b-app-body-table {
+.tracklist-table {
   padding: 1rem;
   width: 600px;
 }
