@@ -63,7 +63,7 @@ class ImageSelector extends Component {
         onMouseLeave={this.handleHide}
         src={imgSrc}
         size="large"
-        className="b-audio-player--cover-img"
+        className="cover-img"
       />
     );
   }

@@ -1,13 +1,13 @@
-.b-audio-player {
+.audio-player {
   text-align: center;
   margin-bottom: 2.5em !important;
 }
 
-.b-audio-player--cover-img {
+.cover-img {
   margin-bottom: 1em;
 }
 
-.b-audio-player-mix-title {
+.mix-title {
   font-size: 2rem !important;
   font-weight: 300 !important;
   padding: 0.5em 0;

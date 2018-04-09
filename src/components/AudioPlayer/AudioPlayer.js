@@ -15,13 +15,13 @@ function AudioPlayer({
   initialiseTracklist
 }) {
   return (
-    <div className="b-audio-player-container">
-      <Card raised fluid color="blue" className="b-audio-player">
+    <div>
+      <Card raised fluid color="blue" className="audio-player">
         <Card.Content>
           <ImageSelector />
           <Card.Header
             content={<MixTitle title={mixTitle} saveNewTitle={saveMixTitle} />}
-            className="b-audio-player-mix-title"
+            className="mix-title"
           />
         </Card.Content>
         <Card.Content extra>
