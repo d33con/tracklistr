@@ -120,7 +120,7 @@ class App extends Component {
     const { tracklist, mixTitle } = this.state;
     return (
       <div className="app">
-        <Container className="header">
+        <Container className="header__container">
           <div className="header__title">Tracklistah</div>
         </Container>
         <Container className="main-body">

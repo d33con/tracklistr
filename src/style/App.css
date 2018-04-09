@@ -3,7 +3,7 @@
   text-align: left;
 }
 
-.header {
+.header__container {
   height: 10vh;
   font-family: "Cairo", sans-serif;
   padding: 3rem;
