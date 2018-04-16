@@ -36,12 +36,12 @@ class ProgressBar extends Component {
 
     return (
       <div
-        className="b-progress"
+        className="progress-bar"
         onClick={this.getTrackPosition}
         ref={progressBar => (this.progressBar = progressBar)}
       >
-        <div className="b-progress-bar" style={barStyle} />
-        <div className="b-progress-bar-label">
+        <div className="progress-bar__filled" style={barStyle} />
+        <div className="progress-bar__label">
           <span>
             {currentTime} / {duration}
           </span>

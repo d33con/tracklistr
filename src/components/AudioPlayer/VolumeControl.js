@@ -100,8 +100,8 @@ class VolumeControl extends Component {
     };
 
     return (
-      <div className="b-volume-bar-container">
-        <div className="b-volume-bar-icon">
+      <div className="volume-bar__container">
+        <div className="volume-bar__icon">
           {isMuted ? (
             <Icon.Group onClick={this.unMuteVolume} color="grey" size="large">
               <Icon name="volume off" />
@@ -117,13 +117,13 @@ class VolumeControl extends Component {
           )}
         </div>
         <div
-          className="b-volume-bar-background"
+          className="volume-bar__background"
           onMouseMove={this.setVolumeByDrag}
           onClick={this.setVolumeByClick}
           onMouseDown={this.onMouseDown}
           ref={volumeBar => (this.volumeBar = volumeBar)}
         >
-          <span className="b-volume-bar-filled" style={barStyle} />
+          <span className="volume-bar__filled" style={barStyle} />
         </div>
       </div>
     );

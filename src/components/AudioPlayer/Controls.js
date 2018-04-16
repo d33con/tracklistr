@@ -161,10 +161,10 @@ class Controls extends Component {
     } = this.state;
 
     return (
-      <div className="b-audio-player-controls">
+      <div className="audio-player__controls">
         <audio
           ref={audio => (this.audioSrc = audio)}
-          className="audio-player--file"
+          className="audio-player__file"
           src={audioSrc}
         />
         <VolumeControl
@@ -237,7 +237,7 @@ class Controls extends Component {
             </Popup.Content>
           </Popup>
         </Button.Group>
-        <div className="b-add-track">
+        <div className="add-track-button">
           <Button
             icon="add"
             color="green"
